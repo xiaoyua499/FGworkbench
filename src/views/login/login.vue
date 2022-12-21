@@ -37,7 +37,7 @@
         </div>
       </div>
       <!-- 各选项登录界面 -->
-      <router-view v-else></router-view>
+        <router-view></router-view>
     </el-card>
   </div>
 </template>
