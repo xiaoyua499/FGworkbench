@@ -79,7 +79,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
     justify-content: space-between;
     align-items: center;
 
-    /deep/.checkbox {
+    :deep(.checkbox){
       display: flex;
       align-items: center;
 

@@ -5,9 +5,7 @@
       <img class="trademark" src="../../assets/feige.ico" alt="">
       <h1 class="title">商家版</h1>
       <button class="switch" @click="goTalent">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#jiantou_zuoyouqiehuan"></use>
-        </svg>
+        <i class='iconfont jiantou_zuoyouqiehuan'></i>
         <p>切换达人版</p>
       </button>
       <span>一站式客服工作台</span>
@@ -15,20 +13,14 @@
     <div class="merchants-right">
       <div class="merchants-right-top">
         <div class="top">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#xiangzuojiantou"></use>
-          </svg>
+          <i class='iconfont xiangzuojiantou'></i>
           <!-- 关闭与最小化图标 -->
           <div>
             <el-tooltip class="box-item" effect="dark" content="最小化" placement="bottom">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#suoxiao"></use>
-              </svg>
+              <i class='iconfont suoxiao'></i>
             </el-tooltip>
             <el-tooltip class="box-item" effect="dark" content="关闭" placement="bottom">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#guanbi"></use>
-              </svg>
+              <i class='iconfont guanbi'></i>
             </el-tooltip>
           </div>
         </div>
@@ -49,10 +41,9 @@
 </template>
 
 <script lang='ts' setup>
-import OtherLogin from '../../components/OtherLogin.vue'
-import router from '../../router'
+import router from '@/router'
 
-const otherShow:boolean = true 
+const otherShow: boolean = true
 
 //切换到达人登录页面
 const goTalent = () => {
@@ -102,9 +93,8 @@ const goTalent = () => {
       border-radius: 5px;
       color: #fff;
 
-      .icon {
-        width: 15px;
-        height: 15px;
+      .iconfont {
+        font-size: 15px;
       }
     }
 
@@ -128,20 +118,18 @@ const goTalent = () => {
         align-items: center;
         justify-content: space-between;
 
-        .icon {
-          width: 15px;
-          height: 15px;
-          fill: #999;
+        .iconfont {
+          font-size: 15px;
+          color: #999;
         }
 
         div {
-          .icon:nth-child(1) {
+          .iconfont:nth-child(1) {
             margin-right: 10px;
           }
 
-          .icon:nth-child(2) {
-            width: 12px;
-            height: 12px;
+          .iconfont:nth-child(2) {
+            font-size: 12px;
             margin-right: 10px;
           }
         }
