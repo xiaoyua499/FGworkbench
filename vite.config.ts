@@ -16,6 +16,15 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
+  server: {
+    proxy: {//跨域代理
+      '/api': {
+        target: 'http://localhost:3000/api/v1',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, '')
+      }
+    }
+  },
   resolve: {
     //配置路径别名
     alias: [
@@ -23,6 +32,6 @@ export default defineConfig({
         find: '@',
         replacement: path.resolve(__dirname, 'src')
       }
-    ]
+    ],
   }
 })

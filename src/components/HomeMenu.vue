@@ -1,52 +1,80 @@
 <template>
-  <el-menu class="menu" :collapse="true">
+  <el-menu class="menu" :collapse="true" router>
     <div class="menu-top">
-      <el-menu-item index="1">
-        <i class='iconfont gf-bubbles4'></i>
-        <span class="title">会话</span>
-        <template #title>会话</template>
-      </el-menu-item>
-      <el-menu-item index="2">
-        <i class='iconfont shuzhuangtu'></i>
-        <span class="title">数据</span>
-        <template #title>数据</template>
-      </el-menu-item>
-      <el-menu-item index="3">
-        <i class='iconfont tianchongxing-'></i>
-        <span class="title">留言</span>
-        <template #title>留言</template>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <i class='iconfont yingyongzhongxin'></i>
-        <span class="title">客服管理</span>
-        <template #title>客服管理</template>
-      </el-menu-item>
-      <el-menu-item index="5">
-        <i class='iconfont kefu'></i>
-        <span class="title">平台客服</span>
-        <template #title>平台客服</template>
+      <el-menu-item :index="item.router" v-for="item in menuDataTop" :key="item.index">
+        <i class='iconfont' :class="item.iconfont"></i>
+        <span class="title">{{ item.title }}</span>
+        <template #title>{{ item.title }}</template>
       </el-menu-item>
     </div>
     <div class="menu-bottom">
-      <el-menu-item index="6">
-        <i class='iconfont renwu'></i>
-        <template #title>数据/短语导出明细</template>
-      </el-menu-item>
-      <el-menu-item index="7">
-        <i class='iconfont shezhi'></i>
-        <template #title>设置</template>
-      </el-menu-item>
-      <el-menu-item index="8">
-        <i class='iconfont dianpu1'></i>
-        <template #title>前往商家后台</template>
+      <el-menu-item :index="item.router" v-for="item in menuDataBottom" :key="item.index">
+        <i class='iconfont' :class="item.iconfont"></i>
+        <template #title>{{ item.title }}</template>
       </el-menu-item>
     </div>
   </el-menu>
 </template>
 
 <script lang='ts' setup>
+import router from '@/router'
 import { ref } from 'vue'
 
+//menu顶部数据
+const menuDataTop = [
+  {
+    router: 'conversation',
+    iconfont: 'gf-bubbles4',
+    title: '会话',
+    index: 1
+  },
+  {
+    router: 'information',
+    iconfont: 'shuzhuangtu',
+    title: '数据',
+    index: 2
+  },
+  {
+    router: 'messageBoard',
+    iconfont: 'tianchongxing-',
+    title: '留言',
+    index: 3
+  },
+  {
+    router: 'management',
+    iconfont: 'yingyongzhongxin',
+    title: '客服管理',
+    index: 4
+  },
+  {
+    router: 'platform',
+    iconfont: 'kefu',
+    title: '平台客服',
+    index: 5
+  },
+]
+
+//menu底部数据
+const menuDataBottom = [
+  {
+    router: 'derive',
+    iconfont: 'renwu',
+    title: '数据/短语导出明细',
+    index: 1
+  },
+  {
+    router: 'setting',
+    iconfont: 'shezhi',
+    title: '设置',
+    index: 2
+  },
+  {
+    router: 'backstage',
+    iconfont: 'dianpu1',
+    title: '前往商家后台',
+    index: 3
+  }
+]
 </script>
 
 <style lang='less' scoped>
@@ -57,11 +85,11 @@ import { ref } from 'vue'
   padding: 10px 0;
   height: 740px;
   border: none;
-  background-image: linear-gradient(180deg, #81b3fe, #1966ff);
+  background-image: linear-gradient(180deg, #618efb, #1966ff);
 
   .menu-bottom,
   .menu-top {
-    /deep/.el-menu-item {
+    :deep(.el-menu-item) {
       margin: 5px 0;
       border-radius: 10px;
 

@@ -60,7 +60,7 @@ const goTalent = () => {
   width: 100%;
   height: 100%;
 
-  /deep/.box-card {
+  :deep(.box-card) {
     width: 625px;
     height: 500px;
 

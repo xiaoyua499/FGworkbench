@@ -1,8 +1,9 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 3830628 */
+  font-family: "iconfont";
+  /* Project id 3830628 */
   src: url('iconfont.woff2?t=1671792676530') format('woff2'),
-       url('iconfont.woff?t=1671792676530') format('woff'),
-       url('iconfont.ttf?t=1671792676530') format('truetype');
+    url('iconfont.woff?t=1671792676530') format('woff'),
+    url('iconfont.ttf?t=1671792676530') format('truetype');
 }
 
 .iconfont {
@@ -264,4 +265,3 @@
 .fasong2:before {
   content: "\e60a";
 }
-
