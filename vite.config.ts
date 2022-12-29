@@ -19,7 +19,7 @@ export default defineConfig({
   server: {
     proxy: {//跨域代理
       '/api': {
-        target: 'http://localhost:3000/api/v1',
+        target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '')
       }

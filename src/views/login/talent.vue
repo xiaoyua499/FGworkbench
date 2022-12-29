@@ -5,7 +5,7 @@
       <img class="trademark" src="../../assets/feige.ico" alt="">
       <h1 class="title">达人版</h1>
       <button class="switch" @click="goMerchants">
-            <i class='iconfont jiantou_zuoyouqiehuan'></i>
+        <i class='iconfont jiantou_zuoyouqiehuan'></i>
         <p>切换商家版</p>
       </button>
       <span>一站式客服工作台</span>
@@ -13,14 +13,14 @@
     <div class="talent-right">
       <div class="talent-right-top">
         <div class="top">
-            <i class='iconfont xiangzuojiantou'></i>
+          <i class='iconfont xiangzuojiantou'></i>
           <!-- 关闭与最小化图标 -->
           <div>
             <el-tooltip class="box-item" effect="dark" content="最小化" placement="bottom">
-            <i class='iconfont suoxiao'></i>
+              <i class='iconfont suoxiao'></i>
             </el-tooltip>
             <el-tooltip class="box-item" effect="dark" content="关闭" placement="bottom">
-            <i class='iconfont guanbi'></i>
+              <i class='iconfont guanbi'></i>
             </el-tooltip>
           </div>
         </div>
@@ -29,7 +29,10 @@
           <span>|</span>
           <router-link to="/login/talent/Temail">邮箱登录</router-link>
         </div>
-        <router-view></router-view>
+        <keep-alive :include="['Phone','Email']">
+          <router-view></router-view>
+        </keep-alive>
+
         <OtherLogin />
       </div>
       <div class="agreement">
@@ -42,7 +45,7 @@
 
 <script lang='ts' setup>
 import router from '@/router'
-
+name: 'Telent'
 const otherShow: boolean = false
 
 //切换到达人登录页面

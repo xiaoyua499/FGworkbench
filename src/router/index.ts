@@ -60,7 +60,6 @@ const routes: RouteRecordRaw[] = [
             path: 'Mphone',//手机登录
             name: 'MPhone',
             component: () => import('@/views/login/phone.vue'),
-
           },
           {
             path: 'Memail',//邮箱登录
@@ -83,9 +82,19 @@ const routes: RouteRecordRaw[] = [
             path: 'Temail',//邮箱登录
             name: 'TEmail',
             component: () => import('@/views/login/email.vue')
+          },
+          {
+            path: 'Tregister',//注册页面
+            name: 'TRegister',
+            component: () => import('@/views/login/register.vue')
           }
         ]
       },
+      {
+        path: 'register',//注册页面 
+        name: 'Register',
+        component: () => import('@/views/login/register.vue')
+      }
     ]
   },
   {

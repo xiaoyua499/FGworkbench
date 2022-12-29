@@ -42,7 +42,7 @@
 
 <script lang='ts' setup>
 import router from '@/router'
-
+name:'Merchants'
 const otherShow: boolean = true
 
 //切换到达人登录页面

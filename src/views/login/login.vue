@@ -38,7 +38,7 @@
 import router from "@/router"
 
 import { ref } from 'vue'
-
+name:'Login'
 const show = ref<boolean>(true)
 //点击跳转商家登录页面
 const goMerchants = () => {
