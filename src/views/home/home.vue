@@ -23,17 +23,12 @@
 </template>
 
 <script lang='ts' setup>
-import { getUser } from "@/server/api/home";
 import { onMounted, ref } from "vue-demi";
 import { nextTick } from 'vue'
 import { ElInput } from 'element-plus'
 
 const data = ref()
-onMounted(async () => {
-  let res = await getUser()
-  console.log(res);
-  data.value = res
-})
+
 
 const inputValue = ref('')
 const dynamicTags = ref(['Tag 1', 'Tag 2', 'Tag 3'])
