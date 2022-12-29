@@ -16,7 +16,10 @@
       <div class="checkbox">
         <el-checkbox v-model="checked" label="记住账号密码" size="large" />
       </div>
-      <span>忘记密码</span>
+      <div class="right">
+        <span @click="goRegister">还未注册？</span>
+        <span>忘记密码</span>
+      </div>
     </div>
     <el-form-item>
       <el-button class="login-bth" type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
@@ -27,6 +30,7 @@
 <script lang='ts' setup>
 import { reactive, ref } from 'vue'
 import type { FormInstance } from 'element-plus'
+import router from '@/router'
 
 const checked = ref(true)
 
@@ -56,6 +60,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
   })
 }
 
+const goRegister = () => {
+  router.push('/login/register')
+}
+
 </script>
 
 <style lang='less' scoped>
@@ -68,6 +76,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
   .el-form-item:nth-child(2) {
     margin-bottom: 10px;
+
     .verification {
       color: #1f6aff;
     }
@@ -79,7 +88,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
     justify-content: space-between;
     align-items: center;
 
-    /deep/.checkbox {
+    :deep(.checkbox) {
       display: flex;
       align-items: center;
 
@@ -88,10 +97,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
       }
     }
 
-    &>span {
-      font-size: 12px;
+    .right {
+      span {
+        font-size: 12px;
+      }
     }
   }
+
 
   .login-bth {
     width: 100%;

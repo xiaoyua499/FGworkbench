@@ -6,9 +6,8 @@
 </template>
 
 <script lang='ts' setup>
-import LoginForm from '../../components/LoginForm.vue';
 import { LoginRouterData }  from '../../plugin/types'
-
+name:'Phone'
 const data: LoginRouterData = {
   account: '手机号码',
   validation: '验证码',

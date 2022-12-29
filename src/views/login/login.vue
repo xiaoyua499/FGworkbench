@@ -12,41 +12,33 @@
           <div class="merchants" @click="goMerchants">
             <p>我是商家</p>
             <p>自营小店，承接电商咨询</p>
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#xiangshangyuanjiantou-copy"></use>
-            </svg>
+            <i class='iconfont xiangshangyuanjiantou-copy'></i>
             <div class="bgcIcons">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#dianpu1"></use>
-              </svg>
+              <i class='iconfont dianpu1 '></i>
             </div>
           </div>
           <!-- 达人 -->
           <div class="talent" @click="goTalent">
             <p>我是达人</p>
             <p>达人带货，承接直播咨询</p>
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#darenjiantou-copy-copy"></use>
-            </svg>
+            <i class='iconfont darenjiantou-copy-copy '></i>
             <div class="bgcIcons">
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#huangguan"></use>
-              </svg>
+              <i class='iconfont huangguan '></i>
             </div>
           </div>
         </div>
       </div>
       <!-- 各选项登录界面 -->
-        <router-view></router-view>
+      <router-view></router-view>
     </el-card>
   </div>
 </template>
 
 <script lang='ts' setup>
-import router from "../../router"
+import router from "@/router"
 
 import { ref } from 'vue'
-
+name:'Login'
 const show = ref<boolean>(true)
 //点击跳转商家登录页面
 const goMerchants = () => {
@@ -68,7 +60,7 @@ const goTalent = () => {
   width: 100%;
   height: 100%;
 
-  /deep/.box-card {
+  :deep(.box-card) {
     width: 625px;
     height: 500px;
 
@@ -126,21 +118,19 @@ const goTalent = () => {
             font-size: 14px;
           }
 
-          .icon {
-            width: 20px;
-            height: 20px;
-            fill: none;
+          .iconfont {
+            font-size: 20px;
+            color: none;
           }
 
           .bgcIcons {
             position: absolute;
-            bottom: -10px;
+            bottom: -6px;
             right: 20px;
 
-            .icon {
-              width: 100px;
-              height: 100px;
-              fill: #c3d7ff;
+            .iconfont {
+              font-size: 100px;
+              color: #c3d7ff;
             }
           }
         }
@@ -165,22 +155,20 @@ const goTalent = () => {
             font-size: 14px;
           }
 
-          .icon {
-            width: 20px;
-            height: 20px;
-            fill: none;
+          .iconfont {
+            font-size: 20px;
+            color: none;
             // background-color: #fff;
           }
 
           .bgcIcons {
             position: absolute;
-            bottom: -15px;
+            bottom: -11px;
             right: 20px;
 
-            .icon {
-              width: 100px;
-              height: 100px;
-              fill: #cbb8ff;
+            .iconfont {
+              font-size: 100px;
+              color: #cbb8ff;
             }
           }
         }
