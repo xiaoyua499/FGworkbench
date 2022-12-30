@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import { userInfo } from "@/server/api/login";
+import { LoginAuthority } from "@/server/api/login";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -112,7 +112,6 @@ const routes: RouteRecordRaw[] = [
 ]
 
 
-
 const router = createRouter(
   {
     history: createWebHistory(),
@@ -122,13 +121,27 @@ const router = createRouter(
 
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requireAuth) {
-    const token = localStorage.getItem('token')
-    if (token) {
+  //获取登录权限
+  const getAuthority = async () => {
+    const status = await LoginAuthority().then(res => {
+      const status = res.status
+      return status
+    })
+      .catch(res => {
+        const status = res.response.status
+        // console.log(res.response.status);
+        return status
+      })
+    // console.log(status);
+    //判断是否取得登录权限
+    if (status === 200) {
       next()
     } else {
       next('/login')
     }
+  }
+  if (to.meta.requireAuth) {
+    getAuthority()
   } else {
     next()
   }

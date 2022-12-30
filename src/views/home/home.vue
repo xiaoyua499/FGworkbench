@@ -10,7 +10,7 @@
             @close="handleClose(tag)">
             {{ tag }}
           </el-tag>
-          <el-button  class="button-new-tag ml-1" size="small" @click="addTag">
+          <el-button class="button-new-tag ml-1" size="small" @click="addTag">
             +
           </el-button>
         </el-header>
@@ -27,6 +27,7 @@ import { onMounted, ref } from "vue-demi";
 import { nextTick } from 'vue'
 import { ElInput } from 'element-plus'
 
+
 const data = ref()
 
 
@@ -40,6 +41,7 @@ const handleClose = (tag: string) => {
 const addTag = () => {
   dynamicTags.value.push(inputValue.value)
 }
+
 
 </script>
 
