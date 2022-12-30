@@ -5,6 +5,18 @@ interface LoginRouterData {
   type: string
 }
 
+interface EmailData{
+  email:string,
+  password:string
+}
+
+interface PhoneData{
+  mobile:string,
+  validation:string
+}
+
 export {
-  LoginRouterData
+  LoginRouterData,
+  EmailData,
+  PhoneData
 }

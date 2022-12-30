@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { userInfo } from "@/server/api/login";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -6,6 +7,9 @@ const routes: RouteRecordRaw[] = [
     name: 'Home', //首页
     component: () => import('@/views/home/home.vue'),
     redirect: '/conversation',//设置默认页面
+    meta: {
+      requireAuth: true,//该路由需要权限校验
+    },
     children: [
       {
         path: 'conversation', //会话
@@ -100,9 +104,14 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/backstage', //后台
     name: 'Backstage',
+    meta: {
+      requireAuth: true,//该路由需要权限校验
+    },
     component: () => import('@/views/backstage/backstage.vue')
   }
 ]
+
+
 
 const router = createRouter(
   {
@@ -110,5 +119,19 @@ const router = createRouter(
     routes
   }
 )
+
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    const token = localStorage.getItem('token')
+    if (token) {
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    next()
+  }
+})
 
 export default router

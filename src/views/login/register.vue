@@ -6,24 +6,24 @@
       <button @click="goLogin">登录</button>
     </div>
     <div class="register-from">
-      <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="120px" status-icon>
+      <el-form ref="ruleFormRef" :model="registerForm" :rules="rules" label-width="120px" status-icon>
         <el-form-item label="用户名" prop="nickname">
-          <el-input v-model="ruleForm.nickname" placeholder="请设置用户名" />
+          <el-input v-model="registerForm.nickname" placeholder="请设置用户名" />
         </el-form-item>
         <el-form-item label="手机号码" prop="mobile">
-          <el-input v-model="ruleForm.mobile" placeholder="可用于登录或找回密码" />
+          <el-input v-model="registerForm.mobile" placeholder="可用于登录或找回密码" />
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="ruleForm.email" placeholder="可用于登录或找回密码" />
+          <el-input v-model="registerForm.email" placeholder="可用于登录或找回密码" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="ruleForm.password" placeholder="请设置登录密码" />
+          <el-input v-model="registerForm.password" placeholder="请设置登录密码" />
         </el-form-item>
         <el-form-item label="请确认密码" prop="passwordRepeat">
-          <el-input v-model="ruleForm.passwordRepeat" placeholder="请确认密码" />
+          <el-input v-model="registerForm.passwordRepeat" placeholder="请确认密码" />
         </el-form-item>
         <el-form-item class="from-button">
-          <el-button type="primary" @click="submitForm(ruleFormRef)">
+          <el-button type="primary" @click="submitRegisterForm(ruleFormRef)">
             注册
           </el-button>
           <el-button @click="resetForm(ruleFormRef)">重置</el-button>
@@ -41,14 +41,17 @@ import { register } from '@/server/api/login';
 import { ElMessage } from 'element-plus'
 name: 'Register'
 const ruleFormRef = ref<FormInstance>()
-const ruleForm = reactive({
-  mobile: "13049153466",
-  email: "123456@qq.com",
-  nickname: "admin",
-  password: "123456",
-  passwordRepeat: "123456"
+
+//注册表单数据
+const registerForm = reactive({
+  mobile: "13049153466", //手机号码
+  email: "123456@qq.com",//邮箱
+  nickname: "admin",//昵称
+  password: "123456",//密码
+  passwordRepeat: "123456"//确认密码
 })
 
+//表单验证规则
 const rules = reactive<FormRules>({
   nickname: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -71,54 +74,62 @@ const rules = reactive<FormRules>({
   ],
 })
 
-const submitForm = async (formEl: FormInstance | undefined) => {
+//提交注册表单
+const submitRegisterForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  await formEl.validate((valid, fields) => {
+  formEl.validate((valid, fields) => {
+    console.log(valid);
+
     if (valid) {
-      Register(ruleForm)
+      sendRegister(registerForm)
     } else {
       console.log('error submit!')
     }
   })
 }
 
+//重置表单
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.resetFields()
 }
 
+//跳转登录页面
 const goLogin = () => {
   router.go(-1)
 }
 
-const Register = async (ruleForm: any) => {
+//发送注册信息
+const sendRegister = async (ruleForm: any) => {
+  //获取发送注册数据后的回调信息
   const data = await register(ruleForm)
     .then(res => {
       const data = res
       return data
     }
     )
-    .catch(req => {
-      const data = req.response.data
+    .catch(res => {
+      const data = res.response.data
       return data
     }
     )
+  //判断是否注册成功
   if (data.status === 201) {
+    //如果注册成功跳转到登录页面
     goLogin()
     ElMessage({
       message: '注册成功',
       type: 'success',
-      offset:150
+      offset: 150
     })
-    console.log(data.status, '注册成功');
+    // console.log(data.status, '注册成功');
   } else {
-    // ElMessage.error(data.message)
     ElMessage({
       message: data.message,
       type: 'error',
       offset: 150
     })
-    console.log(data.message);
+    // console.log(data.message);
   }
 }
 </script>
