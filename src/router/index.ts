@@ -14,7 +14,30 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'conversation', //会话
         name: 'Conversation',
-        component: () => import('@/views/home/conversation.vue')
+        redirect: '/conversation/order',//设置默认页面
+        component: () => import('@/views/conversation/conversation.vue'),
+        children: [
+          {
+            path: 'order',//订单
+            name: 'Order',
+            component: () => import('@/views/conversation/order.vue')
+          },
+          {
+            path: 'commodity',//商品
+            name: 'Commodity',
+            component: () => import('@/views/conversation/commodity.vue')
+          },
+          {
+            path: 'phrase',//快捷短语
+            name: 'Phrase',
+            component: () => import('@/views/conversation/phrase.vue')
+          },
+          {
+            path: 'assistant',//智能助手
+            name: 'Assistant',
+            component: () => import('@/views/conversation/assistant.vue')
+          }
+        ]
       },
       {
         path: 'information', //数据
@@ -108,6 +131,22 @@ const routes: RouteRecordRaw[] = [
       requireAuth: true,//该路由需要权限校验
     },
     component: () => import('@/views/backstage/backstage.vue')
+  },
+  {
+    path: '/guide', //指南
+    name: 'Guide',
+    meta: {
+      requireAuth: true,//该路由需要权限校验
+    },
+    component: () => import('@/views/guide/guide.vue')
+  },
+  {
+    path: '/download', //下载
+    name: 'Download',
+    meta: {
+      requireAuth: true,//该路由需要权限校验
+    },
+    component: () => import('@/views/download/download.vue')
   }
 ]
 
