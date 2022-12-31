@@ -19,8 +19,15 @@ a {
 a:hover,
 a:visited,
 a:link,
-a:active{
+a:active {
   color: #333;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 
@@ -33,6 +40,37 @@ a:active{
   -webkit-animation: AnimationName 29s ease infinite;
   -moz-animation: AnimationName 29s ease infinite;
   animation: AnimationName 29s ease infinite;
+}
+
+/* 标签栏圆角 */
+.fillet-left,
+.fillet-right {
+  position: relative;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.fillet-left::before,
+.fillet-right::after {
+  position: absolute;
+  bottom: -1px;
+  content: '';
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  box-shadow: 0 0 0 40px #fff;
+  /*使用box-shadow不影响尺寸*/
+  transition: .2s;
+}
+
+.fillet-left::before {
+  left: -25px;
+  clip-path: inset(50% -10px 0 50%);
+}
+
+.fillet-right::after {
+  right: -25px;
+  clip-path: inset(50% 50% 0 -10px);
 }
 
 @-webkit-keyframes AnimationName {

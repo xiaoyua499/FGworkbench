@@ -15,8 +15,16 @@ interface PhoneData{
   validation:string
 }
 
+interface UserData {
+  nickname: string,
+  id: string,
+  email: string,
+  mobile: string
+}
+
 export {
   LoginRouterData,
   EmailData,
-  PhoneData
+  PhoneData,
+  UserData
 }
