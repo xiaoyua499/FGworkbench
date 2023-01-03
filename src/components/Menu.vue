@@ -52,7 +52,7 @@ const bgc = {
 
   .menu-bottom,
   .menu-top {
-    display: inline-block;
+    // display: inline-block;
 
     :deep(.el-menu-item) {
       display: flex;
@@ -61,6 +61,7 @@ const bgc = {
       margin: 5px 0;
       border-radius: 10px;
       padding: 0;
+      width: 100%;
 
       .el-menu-tooltip__trigger {
         display: flex;
