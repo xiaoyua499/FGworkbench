@@ -127,7 +127,7 @@ const menuDataBottom = [
     index: 3
   }
 ]
-
+//menu动态样式
 const activeStyle = {
   color: '#d6e6ff',
   activeIconColor: '#fff',
