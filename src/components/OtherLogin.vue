@@ -5,11 +5,11 @@
       <p class="other">其他登录方式</p>
     </el-divider>
     <div class="login-mode">
-      <div v-show="props.otherShow">
+      <div v-show="otherShow">
         <img src="https://lf1-cdn-tos.bytegoofy.com/goofy/ies/douyin_web/public/favicon.ico" alt="">
         <span>抖音登录</span>
       </div>
-      <div v-show="props.otherShow">
+      <div v-show="otherShow">
         <img src="https://lf9-static.bytednsdoc.com/obj/eden-cn/pipieh7nupabozups/toutiao_web_pc/icon_tt_192.png"
           alt="">
         <span>头条登录</span>
@@ -23,7 +23,7 @@
 </template>
 
 <script lang='ts' setup>
-const props = defineProps({
+const otherProps = defineProps({
   otherShow: {
     type: Boolean,
     default: () => { }

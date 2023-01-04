@@ -15,17 +15,18 @@ export const useUserStore = defineStore(Names.User, {
         //在线
         {
           text: '在线',
-          state: false
+          bgc: '#28c728'
         },
         //小休
         {
           text: '小休',
-          state: false
+          bgc: '#ff9a0d'
         },
         //离线
         {
           text: '离线',
-          state: false
+          bgc: '#ccc'
+
         }
       ]
     }

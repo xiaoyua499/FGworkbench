@@ -8,12 +8,22 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   //获取token
   let token = localStorage.getItem('token')
-  //去除token前后引号
-  token = token!.replace(/^(\s|")+|(\s|")+$/g, '');
-  if (config && config.headers) { // 多一步判断
-    //请求中携带token
-    config.headers.Authorization = "Bearer " + token
+
+  if (token) {
+    //去除token前后引号
+    token = token!.replace(/^(\s|")+|(\s|")+$/g, '');
+    if (config && config.headers) { // 多一步判断
+      //请求中携带token
+      config.headers.Authorization = "Bearer " + token
+    }
+  } else {
+    if (config && config.headers) { // 多一步判断
+      //请求中携带token
+      config.headers.Authorization = ''
+    }
   }
+
+
   return config;
 }, error => {
   return Promise.reject(error);

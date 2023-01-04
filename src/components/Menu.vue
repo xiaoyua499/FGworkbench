@@ -21,7 +21,7 @@
 import router from '@/router'
 import { computed, ref } from 'vue'
 
-const props = defineProps({
+const menuDataProps = defineProps({
   menuDataTop: {
     type: Object,
     default: () => { }

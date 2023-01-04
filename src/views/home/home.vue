@@ -48,7 +48,7 @@ const user = useUserStore()
 const getUser = async () => {
   await userInfo().then(res => {
     user.userInfo = res.data.data
-    console.log(user.userInfo);
+    // console.log(user.userInfo);
   })
 }
 
