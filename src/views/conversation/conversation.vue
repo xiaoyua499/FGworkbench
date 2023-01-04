@@ -1,14 +1,15 @@
 <template>
   <ul class="conversation-box">
     <li class="session-list">
+      <!-- 用户信息 -->
       <div class="user-info">
         <div class="info-left">
           <!-- 头像 -->
           <img src="@/assets/头像.jpg" alt="" class="head-img">
           <!-- 用户在线状态 -->
           <el-dropdown trigger="click" class="state">
-            <div class="el-dropdown-link">
-              <span>在线</span>
+            <div class="el-dropdown-link" :style="{ backgroundColor: `${dropdownLink.bgc}` }">
+              <span>{{ dropdownLink.text }}</span>
               <i class="iconfont jiantouxia"></i>
             </div>
             <template #dropdown>
@@ -58,9 +59,10 @@
           </div>
         </div>
       </div>
+      <!-- 会话列表 -->
       <div class="session">
-        <div class="ability">2</div>
-        <div class="list">3</div>
+        <Search class="search" />
+        <Tabs />
       </div>
     </li>
     <li class="chat-box">
@@ -80,10 +82,11 @@
 import { useUserStore } from '@/store/user';
 import { ref, watch } from 'vue';
 
-const radio = ref()
+const radio = ref(1)
 
-watch(radio,()=>{
-  console.log(radio.value);
+watch(radio, () => {
+  getUserCondition(radio.value)
+  // console.log(radio.value);
 })
 
 //menu顶部数据
@@ -147,7 +150,20 @@ const activeStyle = {
   activeIconColor: '#1966ff',
   activeColor: 'none'
 }
+
+//下拉菜单动态样式 默认为在线
+const dropdownLink = {
+  text: '在线', //状态
+  bgc: '#28c728' //背景颜色
+}
 const store = useUserStore()
+
+//获取用户状态
+const getUserCondition = (value: number) => {
+  dropdownLink.text = store.userCondition[value - 1].text
+  dropdownLink.bgc = store.userCondition[value - 1].bgc
+  // console.log(dropdownLink);
+}
 
 </script>
 
@@ -165,6 +181,7 @@ const store = useUserStore()
     height: 100%;
     background-color: #fff;
 
+    //用户信息
     .user-info {
       display: flex;
       justify-content: flex-start;
@@ -173,6 +190,7 @@ const store = useUserStore()
       width: 100%;
       height: 15%;
       border-bottom: 2px solid #f7f7f7;
+        
 
       .info-left {
         position: relative;
@@ -201,7 +219,6 @@ const store = useUserStore()
             height: 23px;
             font-size: 14px;
             border-radius: 5px;
-            background-color: #28c728;
             color: #fff;
 
             .iconfont {
@@ -235,22 +252,20 @@ const store = useUserStore()
           }
         }
       }
-
     }
 
     .session {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px 0;
       width: 100%;
       height: 85%;
+      overflow: scroll;
 
-      .ability {
-        width: 100%;
-        height: 15%;
-        border-bottom: 2px solid #f7f7f7;
-      }
-
-      .list {
-        width: 100%;
-        height: 85%;
+      .search {
+        margin-bottom: 10px;
       }
     }
   }

@@ -120,7 +120,7 @@ const sendLogin = async (emailData: any) => {
     const Token = res.data.data.info.token
     //将token存储到localStorage
     localStorage.setItem('token', JSON.stringify(Token))
-    // console.log(Token);
+    console.log(Token);
   })
     .catch(res => {
       const message = res.response.data.message
@@ -129,7 +129,7 @@ const sendLogin = async (emailData: any) => {
         type: 'error',
         offset: 150
       })
-      // console.log(message);
+      console.log(message);
     })
 }
 

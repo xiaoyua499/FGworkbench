@@ -162,8 +162,9 @@ const router = createRouter(
 router.beforeEach((to, from, next) => {
   //获取登录权限
   const getAuthority = async () => {
-    const status = await LoginAuthority().then(res => {
+    const status: any = await LoginAuthority().then(res => {
       const status = res.status
+      // console.log(res);
       return status
     })
       .catch(res => {
