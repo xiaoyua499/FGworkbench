@@ -26,7 +26,6 @@ export const useUserStore = defineStore(Names.User, {
         {
           text: '离线',
           bgc: '#ccc'
-
         }
       ]
     }

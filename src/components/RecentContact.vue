@@ -1,17 +1,22 @@
 <template>
-  <el-collapse class="list-box" v-model="activeNames" @click="handleChange" v-for="(item,index) in listData"
+  <el-collapse class="list-box" v-model="activeNames" @click="handleChange" v-for=" item,index in listData"
     :key="index">
     <el-collapse-item :name="index" class="list">
       <template #title>
-        {{ item }}
+        {{ item.title }}
+        <span v-if="item.showStarNum">({{ customers.starCustomer.length }}/200)</span>
+        <span v-if="item.showPayNum">({{ customers.shoppingCustomer.length }})</span>
+        <span v-if="item.showRecentlyNum">({{ customers.payCustomer.length }})</span>
       </template>
-      <Customer :customers="customers" />
+      <Customer :customers="item.data" />
     </el-collapse-item>
   </el-collapse>
 </template>
 
 <script lang='ts' setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useCustomerStore } from '@/store/customer'
+// import { Customer } from '@/plugin/types'
 
 const activeNames = ref(['1'])
 const handleChange = (val: string[]) => {
@@ -19,37 +24,72 @@ const handleChange = (val: string[]) => {
 }
 
 //顾客信息
-const customers = [
+let customers: any = {
+  starCustomer: [], //标星用户
+  shoppingCustomer: [],//今日咨询未下单用户
+  payCustomer: [],//今日下单未付款
+  recentlyCustomer: [],//最近联系人
+}
+const customerStore = useCustomerStore()
+//获取标星用户
+customers.starCustomer = customerStore.starCustomer
+//获取今日咨询未下单用户
+customers.shoppingCustomer = customerStore.shoppingCustomer
+//获取今日下单未付款
+customers.payCustomer = customerStore.payCustomer
+//获取最近联系人
+customers.recentlyCustomer = customerStore.recentlyCustomer
+
+
+//分组列表
+const listData = [
   {
-    id: '1', //id
-    nikename: '体重', //昵称
-    headImg: '/src/assets/头像.jpg',//头像
-    RecentNews: '用户超时未回复，系统关闭会话', //最近消息
-    RecentTime: '08:04', //最近会话时间
-    isStar: '', //是否标星
-    starColor: 'red'//星星颜色
+    title: '星标用户',
+    data: customers.starCustomer,
+    showStarNum: true,
+    showPayNum: false,
+    showRecentlyNum: false,
   },
   {
-    id: '2', //id
-    nikename: '哈哈哈', //昵称
-    headImg: '/src/assets/头像.jpg',//头像
-    RecentNews: '好的呢亲亲', //最近消息
-    RecentTime: '08:04', //最近会话时间
-    isStar: 'none', //是否标星
-    starColor: 'none'//星星颜色
+    title: '今日咨询未下单',
+    data: customers.shoppingCustomer,
+    showStarNum: false,
+    showPayNum: true,
+    showRecentlyNum: false,
+  },
+  {
+    title: '今日下单未付款',
+    data: customers.payCustomer,
+    showStarNum: false,
+    showPayNum: false,
+    showRecentlyNum: true,
+  },
+  {
+    title: '最近联系人',
+    data: customers.recentlyCustomer,
+    showStarNum: false,
+    showPayNum: false,
+    showRecentlyNum: false,
   },
 ]
-const listData = ['星标用户', '今日咨询未下单', '今日下单未付款', '最近联系人']
 </script>
 
 <style lang='less' scoped>
 .list-box {
+  width: 100%;
+  // height: 30px;
   border: none;
 
 
   :deep(.list) {
+    .el-collapse-item__wrap {
+      border: none;
+    }
+
     .el-collapse-item__header {
+      height: 30px;
       padding: 0 10px;
+      border: none;
     }
   }
 

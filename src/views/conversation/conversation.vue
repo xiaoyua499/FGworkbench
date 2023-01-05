@@ -15,8 +15,8 @@
             <template #dropdown>
               <el-dropdown-menu class="dropdown-menu">
                 <div class="dropdown-menu-top">
-                  <p>{{ store.userInfo.nickname }}</p>
-                  <p>{{ store.userInfo.nickname }}</p>
+                  <p>{{ userStore.userInfo.nickname }}</p>
+                  <p>{{ userStore.userInfo.nickname }}</p>
                 </div>
                 <div class="dropdown-menu-center">
                   <p>切换状态</p>
@@ -52,7 +52,7 @@
           </el-dropdown>
         </div>
         <div class="info-right">
-          <div class="nikename">{{ store.userInfo.nickname }}</div>
+          <div class="nikename">{{ userStore.userInfo.nickname }}</div>
           <div class="queue">
             <span>已开启不排队</span>
             <i class="iconfont wenhao"></i>
@@ -62,7 +62,7 @@
       <!-- 会话列表 -->
       <div class="session">
         <Search class="search" />
-        <Tabs />
+        <Tabs :inServiceNum="inServiceNum"/>
       </div>
     </li>
     <li class="chat-box">
@@ -80,7 +80,14 @@
 
 <script lang='ts' setup>
 import { useUserStore } from '@/store/user';
-import { ref, watch } from 'vue';
+import { useCustomerStore } from "@/store/customer";
+import { onMounted, ref, watch } from 'vue';
+
+//获取用户仓库
+const userStore = useUserStore()
+
+//获取顾客仓库
+const customerStore = useCustomerStore()
 
 const radio = ref(1)
 
@@ -156,14 +163,81 @@ const dropdownLink = {
   text: '在线', //状态
   bgc: '#28c728' //背景颜色
 }
-const store = useUserStore()
 
 //获取用户状态
 const getUserCondition = (value: number) => {
-  dropdownLink.text = store.userCondition[value - 1].text
-  dropdownLink.bgc = store.userCondition[value - 1].bgc
+  dropdownLink.text = userStore.userCondition[value - 1].text
+  dropdownLink.bgc = userStore.userCondition[value - 1].bgc
   // console.log(dropdownLink);
 }
+
+//顾客数据
+const customers = [
+  {
+    id: '1', //id
+    nikename: '体重', //昵称
+    headImg: '/src/assets/头像.jpg',//头像
+    RecentNews: '用户超时未回复，系统关闭会话', //最近消息
+    RecentTime: '08:04', //最近会话时间
+    isShopping: true,//是否下单
+    isPay: false,//是否付款
+    isStar: true, //是否标星
+    isEnd: false,//是否结束会话
+    isRecently:true,//是否为最近会话
+    isPopover:false,//是否展示弹出层
+    starColor: 'red'//星星颜色
+  },
+  {
+    id: '2', //id
+    nikename: '哈哈哈', //昵称
+    headImg: '/src/assets/头像.jpg',//头像
+    RecentNews: '好的呢亲亲', //最近消息
+    RecentTime: '08:04', //最近会话时间
+    isShopping: true,//是否下单
+    isPay: true,//是否付款
+    isStar: false, //是否标星
+    isEnd: false,//是否结束会话
+    isRecently: true,//是否为最近会话
+    isPopover: false,//是否展示弹出层
+    starColor: 'none'//星星颜色
+  },
+  {
+    id: '3', //id
+    nikename: '秦宏飞', //昵称
+    headImg: '/src/assets/头像.jpg',//头像
+    RecentNews: '好的呢亲亲', //最近消息
+    RecentTime: '08:04', //最近会话时间
+    isShopping: true,//是否下单
+    isPay: true,//是否付款
+    isStar: false, //是否标星
+    isEnd: false,//是否结束会话
+    isRecently: true,//是否为最近会话
+    isPopover: false,//是否展示弹出层
+    starColor: 'none'//星星颜色
+  },
+  {
+    id: '4', //id
+    nikename: '小宇啊', //昵称
+    headImg: '/src/assets/头像.jpg',//头像
+    RecentNews: '好的呢亲亲', //最近消息
+    RecentTime: '08:04', //最近会话时间
+    isShopping: true,//是否下单
+    isPay: true,//是否付款
+    isStar: true, //是否标星
+    isEnd: false,//是否结束会话
+    isRecently: true,//是否为最近会话
+    isPopover: false,//是否展示弹出层
+    starColor: 'red'//星星颜色
+  },
+]
+
+const getCustomers = () => {
+  customerStore.getCustomer(customers)
+}
+
+//获取服务中顾客数量
+const inServiceNum= customerStore.inServiceCustomer.length
+onMounted(getCustomers)
 
 </script>
 
@@ -190,7 +264,7 @@ const getUserCondition = (value: number) => {
       width: 100%;
       height: 15%;
       border-bottom: 2px solid #f7f7f7;
-        
+
 
       .info-left {
         position: relative;
@@ -262,7 +336,7 @@ const getUserCondition = (value: number) => {
       padding: 10px 0;
       width: 100%;
       height: 85%;
-      overflow: scroll;
+      // overflow: scroll;
 
       .search {
         margin-bottom: 10px;
