@@ -29,7 +29,11 @@ interface Customer {
   headImg: string,//头像
   RecentNews: string, //最近消息
   RecentTime: string, //最近会话时间
-  isStar: string, //是否标星
+  isShopping: boolean,//是否下单
+  isPay: boolean,//是否付款
+  isStar: boolean, //是否标星
+  isEnd: boolean,//是否结束会话
+  isRecently: boolean,//是否为最近会话
   starColor: string//星星颜色
 }
 

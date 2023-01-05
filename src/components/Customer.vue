@@ -1,19 +1,47 @@
 <template>
   <div class="customer-box" v-for="item in customers" :key="item.id">
+    <!-- 头像 -->
     <img class="headImg" :src="item.headImg" alt="">
     <div class="center">
+      <!-- 昵称 -->
       <span class="nikename">{{ item.nikename }}</span>
+      <!-- 最近会话内容 -->
       <span class="recentNews">{{ item.RecentNews }}</span>
     </div>
     <div class="right">
+      <!-- 最近会话时间 -->
       <span class="recentTime">{{ item.RecentTime }}</span>
-      <i class="iconfont shoucang star" :style="getStyle(item.starColor, item.isStar)"></i>
+      <!-- 星星 -->
+      <el-popover :visible="item.isPopover" placement="top" v-if="item.isStar" width="175px">
+        <div style="display: flex;flex-flow: column;align-items: center;justify-content: space-between;">
+          <p style="font-size">快捷标星(Ctrl+Shift+Y)</p>
+          <div style="margin-top: 5px;display: flex;align-items: center;justify-content: space-around;width: 100%;">
+            <div class="round" style="margin: 0; width: 10px;height: 10px;border-radius: 50%;background-color:#ff574d;" @click="setColor(item,' #ff574d')"></div>
+            <div class="round" style="width: 10px;height: 10px;border-radius: 50%;background-color:#ffb340;" @click="setColor(item,' #ffb340')"></div>
+            <div class="round" style="width: 10px;height: 10px;border-radius: 50%;background-color:#669eff;" @click="setColor(item,' #669eff')"></div>
+            <div class="round" style="width: 10px;height: 10px;border-radius: 50%;background-color:#6ccc3d;" @click="setColor(item,' #6ccc3d')"></div>
+            <div class="round" style="width: 10px;height: 10px;border-radius: 50%;background-color:#ccc;" @click="setColor(item,' #ccc')"></div>
+          </div>
+        </div>
+        <template #reference>
+          <i class="iconfont shoucang star" :style="getStyle(item.starColor)" @click="item.isPopover = true"></i>
+        </template>
+      </el-popover>
     </div>
   </div>
 </template>
 
 <script lang='ts' setup>
+import { ref } from 'vue'
 import { Customer } from "@/plugin/types"
+import { useCustomerStore } from '@/store/customer'
+
+//获取顾客仓库
+const customerStore = useCustomerStore()
+
+const visible = ref(false)
+
+//获取顾客数据
 const customerProps = defineProps({
   customers: {
     type: Object,
@@ -22,11 +50,17 @@ const customerProps = defineProps({
 })
 
 //动态设置星星颜色
-const getStyle = (starColor: string, isStar: string) => {
+const getStyle = (starColor: string) => {
   return {
-    display: isStar,
     color: starColor
   }
+}
+
+const setColor = (item: any, color: string) => {
+  item.isPopover = false
+  item.starColor = color
+  customerStore.updataColor(item.starColor, item.id)
+  // console.log(item);
 }
 </script>
 
@@ -46,6 +80,7 @@ const getStyle = (starColor: string, isStar: string) => {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    background-color: red;
   }
 
   .center {
@@ -72,11 +107,17 @@ const getStyle = (starColor: string, isStar: string) => {
     }
   }
 
-  .right {
+  :deep(.right) {
     display: flex;
     flex-flow: column;
     align-items: center;
     justify-content: center;
+
+    .round {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
   }
 }
 </style>
