@@ -21,32 +21,33 @@ export const useCustomerStore = defineStore(Names.Customer, {
       this.customerData = value
 
       //获取星标用户
-      this.starCustomer = value.filter((item: Customer) => {
+      this.starCustomer = this.customerData.filter((item: Customer) => {
         return item.isStar === true
       })
 
       //获取未下单用户
-      this.shoppingCustomer = value.filter((item: Customer) => {
+      this.shoppingCustomer = this.customerData.filter((item: Customer) => {
         return item.isShopping === true
       })
 
       //获取未付款用户
-      this.payCustomer = value.filter((item: Customer) => {
+      this.payCustomer = this.customerData.filter((item: Customer) => {
         return item.isPay === true
       })
 
       //获取最近用户
-      this.recentlyCustomer = value.filter((item: Customer) => {
+      this.recentlyCustomer = this.customerData.filter((item: Customer) => {
         return item.isRecently === true
       })
 
       //获取服务中用户
-      this.inServiceCustomer = value.filter((item: Customer) => {
+      this.inServiceCustomer = this.customerData.filter((item: Customer) => {
         return item.isEnd === false
       })
     },
 
-    updataColor(color: string, id: string) {
+    //更新星星颜色
+    updataColor(id: any, color: any) {
       this.customerData.forEach(item => {
         if (item.id === id) {
           item.starColor = color

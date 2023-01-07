@@ -1,77 +1,51 @@
 <template>
-  <el-collapse class="list-box" v-model="activeNames" @click="handleChange" v-for=" item,index in listData"
-    :key="index">
-    <el-collapse-item :name="index" class="list">
+  <el-collapse class="list-box" v-model="activeNames" @click="handleChange">
+    <el-collapse-item name="星标用户" class="list">
       <template #title>
-        {{ item.title }}
-        <span v-if="item.showStarNum">({{ customers.starCustomer.length }}/200)</span>
-        <span v-if="item.showPayNum">({{ customers.shoppingCustomer.length }})</span>
-        <span v-if="item.showRecentlyNum">({{ customers.payCustomer.length }})</span>
+        星标用户
+        <span >({{ starCustomer.length }}/200)</span>
       </template>
-      <Customer :customers="item.data" />
+      <Customer :customers="starCustomer" />
+    </el-collapse-item>
+    <el-collapse-item name="今日咨询未下单" class="list">
+      <template #title>
+        今日咨询未下单
+        <span >({{ shoppingCustomer.length }})</span>
+      </template>
+      <Customer :customers="shoppingCustomer" />
+    </el-collapse-item>
+    <el-collapse-item name="今日下单未付款" class="list">
+      <template #title>
+        今日下单未付款
+        <span >({{ payCustomer.length }})</span>
+      </template>
+      <Customer :customers="payCustomer" />
+    </el-collapse-item>
+    <el-collapse-item name="最近联系人" class="list">
+      <template #title>
+        最近联系人
+      </template>
+      <Customer :customers="recentlyCustomer" />
     </el-collapse-item>
   </el-collapse>
 </template>
 
 <script lang='ts' setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useCustomerStore } from '@/store/customer'
+import { storeToRefs } from 'pinia'
 // import { Customer } from '@/plugin/types'
 
 const activeNames = ref(['1'])
 const handleChange = (val: string[]) => {
-  console.log(val)
+  // console.log(val)
 }
 
 //顾客信息
-let customers: any = {
-  starCustomer: [], //标星用户
-  shoppingCustomer: [],//今日咨询未下单用户
-  payCustomer: [],//今日下单未付款
-  recentlyCustomer: [],//最近联系人
-}
 const customerStore = useCustomerStore()
-//获取标星用户
-customers.starCustomer = customerStore.starCustomer
-//获取今日咨询未下单用户
-customers.shoppingCustomer = customerStore.shoppingCustomer
-//获取今日下单未付款
-customers.payCustomer = customerStore.payCustomer
-//获取最近联系人
-customers.recentlyCustomer = customerStore.recentlyCustomer
 
+const { starCustomer, shoppingCustomer, payCustomer, recentlyCustomer }=storeToRefs(customerStore)
 
-//分组列表
-const listData = [
-  {
-    title: '星标用户',
-    data: customers.starCustomer,
-    showStarNum: true,
-    showPayNum: false,
-    showRecentlyNum: false,
-  },
-  {
-    title: '今日咨询未下单',
-    data: customers.shoppingCustomer,
-    showStarNum: false,
-    showPayNum: true,
-    showRecentlyNum: false,
-  },
-  {
-    title: '今日下单未付款',
-    data: customers.payCustomer,
-    showStarNum: false,
-    showPayNum: false,
-    showRecentlyNum: true,
-  },
-  {
-    title: '最近联系人',
-    data: customers.recentlyCustomer,
-    showStarNum: false,
-    showPayNum: false,
-    showRecentlyNum: false,
-  },
-]
 </script>
 
 <style lang='less' scoped>

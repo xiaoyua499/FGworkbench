@@ -12,15 +12,45 @@
       <!-- 最近会话时间 -->
       <span class="recentTime">{{ item.RecentTime }}</span>
       <!-- 星星 -->
-      <el-popover :visible="item.isPopover" placement="top" v-if="item.isStar" width="175px">
-        <div style="display: flex;flex-flow: column;align-items: center;justify-content: space-between;">
+      <el-popover placement="top" v-if="item.isStar" width="175px" trigger="hover" ref="popover">
+        <div style="
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: space-between;">
           <p style="font-size">快捷标星(Ctrl+Shift+Y)</p>
-          <div style="margin-top: 5px;display: flex;align-items: center;justify-content: space-around;width: 100%;">
-            <div class="round" style="margin: 0; width: 10px;height: 10px;border-radius: 50%;background-color:#ff574d;" @click="setColor(item,' #ff574d')"></div>
-            <div class="round" style="width: 10px;height: 10px;border-radius: 50%;background-color:#ffb340;" @click="setColor(item,' #ffb340')"></div>
-            <div class="round" style="width: 10px;height: 10px;border-radius: 50%;background-color:#669eff;" @click="setColor(item,' #669eff')"></div>
-            <div class="round" style="width: 10px;height: 10px;border-radius: 50%;background-color:#6ccc3d;" @click="setColor(item,' #6ccc3d')"></div>
-            <div class="round" style="width: 10px;height: 10px;border-radius: 50%;background-color:#ccc;" @click="setColor(item,' #ccc')"></div>
+          <div style="
+          margin-top: 5px;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          width: 100%;">
+            <div class="round" style="
+            margin: 0; 
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color:#ff574d;" @click="setColor(item, ' #ff574d')"></div>
+            <div class="round" style="
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color:#ffb340;" @click="setColor(item, ' #ffb340')"></div>
+            <div class="round" style="
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color:#669eff;" @click="setColor(item, ' #669eff')"></div>
+            <div class="round" style="
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color:#6ccc3d;" @click="setColor(item, ' #6ccc3d')"></div>
+            <div class="round" style="
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color:#ccc;" @click="setColor(item, ' #ccc')"></div>
           </div>
         </div>
         <template #reference>
@@ -32,14 +62,12 @@
 </template>
 
 <script lang='ts' setup>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { Customer } from "@/plugin/types"
 import { useCustomerStore } from '@/store/customer'
 
 //获取顾客仓库
 const customerStore = useCustomerStore()
-
-const visible = ref(false)
 
 //获取顾客数据
 const customerProps = defineProps({
@@ -56,11 +84,11 @@ const getStyle = (starColor: string) => {
   }
 }
 
+//动态设置星星颜色
 const setColor = (item: any, color: string) => {
   item.isPopover = false
   item.starColor = color
-  customerStore.updataColor(item.starColor, item.id)
-  // console.log(item);
+  customerStore.updataColor(item.id, color)
 }
 </script>
 
