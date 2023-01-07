@@ -7,8 +7,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    CurrentSession: typeof import('./src/components/CurrentSession.vue')['default']
-    Customer: typeof import('./src/components/Customer.vue')['default']
+    CurrentSession: typeof import('./src/components/Conversation/CurrentSession.vue')['default']
+    Customer: typeof import('./src/components/Conversation/Customer.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
@@ -37,10 +37,11 @@ declare module '@vue/runtime-core' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     HomeMenu: typeof import('./src/components/HomeMenu.vue')['default']
+    Information: typeof import('./src/components/Conversation/Information.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     Menu: typeof import('./src/components/Menu.vue')['default']
     OtherLogin: typeof import('./src/components/OtherLogin.vue')['default']
-    RecentContact: typeof import('./src/components/RecentContact.vue')['default']
+    RecentContact: typeof import('./src/components/Conversation/RecentContact.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./src/components/Search.vue')['default']
