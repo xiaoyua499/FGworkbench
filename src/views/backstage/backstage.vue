@@ -1,7 +1,5 @@
 <template>
-  <div>
-    backstage
-  </div>
+  backstage
 </template>
 
 <script lang='ts' setup>

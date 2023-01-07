@@ -61,12 +61,14 @@
       </div>
       <!-- 会话列表 -->
       <div class="session">
+        <!-- 搜索框 -->
         <Search class="search" />
-        <Tabs :inServiceNum="inServiceNum"/>
+        <!-- 会话列表 -->
+        <Tabs :inServiceNum="inServiceNum" />
       </div>
     </li>
     <li class="chat-box">
-      <div class="information">1</div>
+      <information class="information" />
       <div class="chat">2</div>
     </li>
     <li class="sidebar-details">
@@ -183,8 +185,8 @@ const customers = [
     isPay: false,//是否付款
     isStar: true, //是否标星
     isEnd: false,//是否结束会话
-    isRecently:true,//是否为最近会话
-    isPopover:false,//是否展示弹出层
+    isRecently: true,//是否为最近会话
+    isPopover: false,//是否展示弹出层
     starColor: 'red'//星星颜色
   },
   {
@@ -236,7 +238,7 @@ const getCustomers = () => {
 }
 
 //获取服务中顾客数量
-const inServiceNum= customerStore.inServiceCustomer.length
+const inServiceNum = customerStore.inServiceCustomer.length
 onMounted(getCustomers)
 
 </script>
@@ -345,16 +347,19 @@ onMounted(getCustomers)
   }
 
   .chat-box {
+    position: relative;
     width: 38%;
     height: 100%;
     background-color: #f7f7f7;
 
     .information {
-      width: 100%;
-      height: 15%;
-      background-color: #fff;
-      border: 2px solid #f7f7f7;
-      border-top: none;
+      position: absolute;
+      top: 0;
+    }
+
+    .chat {
+      margin-top: 110px;
+      height: 85%;
     }
   }
 
