@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { Names } from "./name";
 import { Customer } from "@/plugin/types";
+import { updataCustomer } from '@/server/api/customer';
 export const useCustomerStore = defineStore(Names.Customer, {
   state: () => {
     return {
@@ -47,11 +48,42 @@ export const useCustomerStore = defineStore(Names.Customer, {
     },
 
     //更新星星颜色
-    updataColor(id: any, color: any) {
-      this.customerData.forEach(item => {
-        if (item.id === id) {
+    async updataColor(customerId: any, color: any) {
+      this.customerData.forEach(async item => {
+        if (item.customerId === customerId) {
           item.starColor = color
+          // console.log(item);
+          //与数据库同步星星颜色
+          this.updataCustomers(item)
         }
+      })
+    },
+    //更新数据库中对应颜色
+    async updataCustomers(item: any) {
+      const params = {
+        customerId: '',
+        isReceive: '',
+        isShopping: '',
+        isPay: '',
+        isStar: '',
+        starColor: '',
+        isEnd: '',
+        RecentNews: '',
+        isRecently: '',
+      }
+      params.customerId = item.customerId
+      params.isReceive = item.isReceive
+      params.isShopping = item.isShopping
+      params.isPay = item.isPay
+      params.isStar = item.isStar
+      params.starColor = item.starColor
+      params.isEnd = item.isEnd
+      params.RecentNews = item.RecentNews
+      params.isRecently = item.isRecently
+      // console.log(params);
+
+      await updataCustomer(params).then(res => {
+        // console.log(res);
       })
     }
   }

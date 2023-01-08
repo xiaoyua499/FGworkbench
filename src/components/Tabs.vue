@@ -26,7 +26,7 @@ import type { TabsPaneContext } from 'element-plus'
 
 const inServiceNumProps = defineProps({
   inServiceNum: {
-    type: Object,
+    type: Number,
     default: () => { }
   }
 })
