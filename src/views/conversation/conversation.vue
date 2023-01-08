@@ -179,7 +179,7 @@ const getCustomersInfos = async () => {
     const data: any[] = res.data.data
     data.forEach(item => {
       //截取最近聊天时间
-      item.updateTime = item.updateTime.slice(12, 16)
+      item.updateTime = Number(item.updateTime.slice(11, 13)) + 8 + item.updateTime.slice(13, 16)
       // console.log(item);
     })
     return data
