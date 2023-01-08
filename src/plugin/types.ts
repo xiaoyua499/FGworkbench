@@ -24,7 +24,7 @@ interface UserData {
 
 //顾客
 interface Customer {
-  id: string, //id
+  customerId: string, //id
   nikename: string, //昵称
   headImg: string,//头像
   RecentNews: string, //最近消息

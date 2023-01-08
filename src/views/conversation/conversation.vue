@@ -84,7 +84,7 @@
 import { useUserStore } from '@/store/user';
 import { useCustomerStore } from "@/store/customer";
 import { onMounted, ref, watch } from 'vue';
-
+import { getCustomerInfo } from '@/server/api/customer'
 //获取用户仓库
 const userStore = useUserStore()
 
@@ -163,7 +163,7 @@ const activeStyle = {
 //下拉菜单动态样式 默认为在线
 const dropdownLink = {
   text: '在线', //状态
-  bgc: '#28c728' //背景颜色
+  bgc: '#28c728' //背景颜色  
 }
 
 //获取用户状态
@@ -173,73 +173,26 @@ const getUserCondition = (value: number) => {
   // console.log(dropdownLink);
 }
 
-//顾客数据
-const customers = [
-  {
-    id: '1', //id
-    nikename: '体重', //昵称
-    headImg: '/src/assets/头像.jpg',//头像
-    RecentNews: '用户超时未回复，系统关闭会话', //最近消息
-    RecentTime: '08:04', //最近会话时间
-    isShopping: true,//是否下单
-    isPay: false,//是否付款
-    isStar: true, //是否标星
-    isEnd: false,//是否结束会话
-    isRecently: true,//是否为最近会话
-    isPopover: false,//是否展示弹出层
-    starColor: 'red'//星星颜色
-  },
-  {
-    id: '2', //id
-    nikename: '哈哈哈', //昵称
-    headImg: '/src/assets/头像.jpg',//头像
-    RecentNews: '好的呢亲亲', //最近消息
-    RecentTime: '08:04', //最近会话时间
-    isShopping: true,//是否下单
-    isPay: true,//是否付款
-    isStar: false, //是否标星
-    isEnd: false,//是否结束会话
-    isRecently: true,//是否为最近会话
-    isPopover: false,//是否展示弹出层
-    starColor: 'none'//星星颜色
-  },
-  {
-    id: '3', //id
-    nikename: '秦宏飞', //昵称
-    headImg: '/src/assets/头像.jpg',//头像
-    RecentNews: '好的呢亲亲', //最近消息
-    RecentTime: '08:04', //最近会话时间
-    isShopping: true,//是否下单
-    isPay: true,//是否付款
-    isStar: false, //是否标星
-    isEnd: false,//是否结束会话
-    isRecently: true,//是否为最近会话
-    isPopover: false,//是否展示弹出层
-    starColor: 'none'//星星颜色
-  },
-  {
-    id: '4', //id
-    nikename: '小宇啊', //昵称
-    headImg: '/src/assets/头像.jpg',//头像
-    RecentNews: '好的呢亲亲', //最近消息
-    RecentTime: '08:04', //最近会话时间
-    isShopping: true,//是否下单
-    isPay: true,//是否付款
-    isStar: true, //是否标星
-    isEnd: false,//是否结束会话
-    isRecently: true,//是否为最近会话
-    isPopover: false,//是否展示弹出层
-    starColor: 'red'//星星颜色
-  },
-]
-
-const getCustomers = () => {
-  customerStore.getCustomer(customers)
+//获取顾客信息
+const getCustomersInfos = async () => {
+  const customer = await getCustomerInfo().then(res => {
+    const data: any[] = res.data.data
+    data.forEach(item => {
+      //截取最近聊天时间
+      item.updateTime = item.updateTime.slice(12, 16)
+      // console.log(item);
+    })
+    return data
+  })
+  // console.log(customer);
+  customerStore.getCustomer(customer)
 }
 
 //获取服务中顾客数量
 const inServiceNum = customerStore.inServiceCustomer.length
-onMounted(getCustomers)
+onMounted(() => {
+  getCustomersInfos()
+})
 
 </script>
 

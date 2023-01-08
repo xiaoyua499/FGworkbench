@@ -4,13 +4,13 @@
     <img class="headImg" :src="item.headImg" alt="">
     <div class="center">
       <!-- 昵称 -->
-      <span class="nikename">{{ item.nikename }}</span>
+      <span class="nikename">{{ item.customerNickName }}</span>
       <!-- 最近会话内容 -->
       <span class="recentNews">{{ item.RecentNews }}</span>
     </div>
     <div class="right">
       <!-- 最近会话时间 -->
-      <span class="recentTime">{{ item.RecentTime }}</span>
+      <span class="recentTime">{{ item.updateTime }}</span>
       <!-- 星星 -->
       <el-popover placement="top" v-if="item.isStar" width="175px" trigger="hover" ref="popover">
         <div style="
@@ -65,6 +65,7 @@
 import { reactive, ref } from 'vue'
 import { Customer } from "@/plugin/types"
 import { useCustomerStore } from '@/store/customer'
+import { updataCustomer } from '@/server/api/customer'
 
 //获取顾客仓库
 const customerStore = useCustomerStore()
@@ -88,7 +89,7 @@ const getStyle = (starColor: string) => {
 const setColor = (item: any, color: string) => {
   item.isPopover = false
   item.starColor = color
-  customerStore.updataColor(item.id, color)
+  customerStore.updataColor(item.customerId, color)
 }
 </script>
 
