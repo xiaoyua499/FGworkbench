@@ -7,7 +7,7 @@
     <!-- 验证 -->
     <el-form-item prop="validation">
       <el-input v-model="LoginForm.validation" :placeholder="props.data.validation" :type="props.data.type"
-        :show-password="!props.data.showCode" >
+        :show-password="!props.data.showCode">
         <template #suffix v-if="props.data.showCode">
           <a class="verification" href="#">发送验证码</a>
         </template>
@@ -37,7 +37,7 @@ import router from '@/router'
 import { login } from '@/server/api/login'
 import { EmailData, PhoneData } from '@/plugin/types'
 import { ElMessage } from 'element-plus'
-name:'LoginFrom'
+name: 'LoginFrom'
 //是否记住密码
 const checked = ref(true)
 
@@ -88,8 +88,8 @@ const submitLoginForm = async (formEl: FormInstance | undefined) => {
       if (props.data.validation === '密码') {
         emailData.email = LoginForm.account
         emailData.password = LoginForm.validation
+        //发送登录请求并跳转到登录页面
         sendLogin(emailData)
-        goHome()
         // console.log('email', emailData);
       } else {
         phoneData.mobile = LoginForm.account
@@ -110,7 +110,7 @@ const goRegister = () => {
 
 //跳转到首页
 const goHome = () => {
-  router.push('/')
+  router.push({ name: 'Home' })
 }
 
 //发送登录请求
@@ -120,7 +120,9 @@ const sendLogin = async (emailData: any) => {
     const Token = res.data.data.info.token
     //将token存储到localStorage
     localStorage.setItem('token', JSON.stringify(Token))
-    console.log(Token);
+    // console.log(Token);
+    //跳转到登录页面
+    goHome()
   })
     .catch(res => {
       const message = res.response.data.message
@@ -129,7 +131,7 @@ const sendLogin = async (emailData: any) => {
         type: 'error',
         offset: 150
       })
-      console.log(message);
+      // console.log(message);
     })
 }
 

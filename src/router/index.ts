@@ -158,30 +158,14 @@ const router = createRouter(
   }
 )
 
-
 router.beforeEach((to, from, next) => {
-  //获取登录权限
-  const getAuthority = async () => {
-    const status: any = await LoginAuthority().then(res => {
-      const status = res.status
-      // console.log(res);
-      return status
-    })
-      .catch(res => {
-        const status = res.response.status
-        // console.log(res.response.status);
-        return status
-      })
-    // console.log(status);
-    //判断是否取得登录权限
-    if (status === 200) {
-      next()
-    } else {
-      next('/login')
-    }
-  }
+  const token = localStorage.getItem('token')
   if (to.meta.requireAuth) {
-    getAuthority()
+    if (!token) {
+      next('/login')
+    } else {
+      next()
+    }
   } else {
     next()
   }

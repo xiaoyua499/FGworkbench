@@ -1,3 +1,4 @@
+import router from "@/router";
 import axios from "axios";
 
 const service = axios.create({
@@ -16,14 +17,7 @@ service.interceptors.request.use(config => {
       //请求中携带token
       config.headers.Authorization = "Bearer " + token
     }
-  } else {
-    if (config && config.headers) { // 多一步判断
-      //请求中携带token
-      config.headers.Authorization = ''
-    }
-  }
-
-
+  } 
   return config;
 }, error => {
   return Promise.reject(error);
@@ -33,8 +27,14 @@ service.interceptors.response.use(
   response => {
     return response;
   },
-  error => {
-    return Promise.reject(error);
+  ({ response }) => {
+    const { status } = response
+    if (status === 401) {
+      router.push({ name: 'Login' })
+    }
+    console.log(status);
+
+    return Promise.reject(Error);
   }
 );
 export default service
