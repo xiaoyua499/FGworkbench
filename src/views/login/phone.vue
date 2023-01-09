@@ -5,9 +5,9 @@
   </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="Phone">
 import { LoginRouterData }  from '../../plugin/types'
-name:'Phone'
+
 const data: LoginRouterData = {
   account: '手机号码',
   validation: '验证码',

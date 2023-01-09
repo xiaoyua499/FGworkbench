@@ -29,7 +29,11 @@
           <span>|</span>
           <router-link to="/login/merchants/Memail">邮箱登录</router-link>
         </div>
-        <router-view></router-view>
+        <router-view v-slot="{ Component }" include="Email,Phone">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
         <OtherLogin :otherShow="otherShow" />
       </div>
       <div class="agreement">
@@ -40,9 +44,8 @@
   </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="Merchants">
 import router from '@/router'
-name:'Merchants'
 const otherShow: boolean = true
 
 //切换到达人登录页面

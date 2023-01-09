@@ -37,7 +37,7 @@ import router from '@/router'
 import { login } from '@/server/api/login'
 import { EmailData, PhoneData } from '@/plugin/types'
 import { ElMessage } from 'element-plus'
-name: 'LoginFrom'
+
 //是否记住密码
 const checked = ref(true)
 

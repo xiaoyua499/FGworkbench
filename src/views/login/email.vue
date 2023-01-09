@@ -4,9 +4,9 @@
   </div>
 </template>
 
-<script lang='ts' setup>
+<script lang='ts' setup name="Email">
 import { LoginRouterData } from '../../plugin/types'
-name: 'Email'
+
 const data: LoginRouterData = {
   account: '邮箱',
   validation: '密码',

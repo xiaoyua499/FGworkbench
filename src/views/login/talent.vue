@@ -29,11 +29,12 @@
           <span>|</span>
           <router-link to="/login/talent/Temail">邮箱登录</router-link>
         </div>
-        <keep-alive :include="['Phone','Email']">
-          <router-view></router-view>
-        </keep-alive>
-
-        <OtherLogin />
+        <router-view v-slot="{ Component }" include="Email,Phone">
+          <keep-alive>
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
+        <OtherLogin :otherShow="otherShow" />
       </div>
       <div class="agreement">
         <span>登录即代表同意 <span class="user-agreement">用户协议</span>和<span class="privacy">隐私条款</span></span>
