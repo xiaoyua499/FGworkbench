@@ -29,7 +29,11 @@
         </div>
       </div>
       <!-- 各选项登录界面 -->
-      <router-view></router-view>
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
     </el-card>
   </div>
 </template>
@@ -38,17 +42,17 @@
 import router from "@/router"
 
 import { ref } from 'vue'
-name:'Login'
+name: 'Login'
 const show = ref<boolean>(true)
 //点击跳转商家登录页面
 const goMerchants = () => {
   show.value = false
-  router.push('login/merchants')
+  router.push('/login/merchants')
 }
 //点击跳转达人登录页面
 const goTalent = () => {
   show.value = false
-  router.push('login/talent')
+  router.push('/login/talent')
 }
 </script>
 

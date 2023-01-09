@@ -64,12 +64,12 @@
         <!-- 搜索框 -->
         <Search class="search" />
         <!-- 会话列表 -->
-        <Tabs :inServiceNum="inServiceNum" />
+        <ConversationTabs :inServiceNum="inServiceNum" />
       </div>
     </li>
     <li class="chat-box">
       <information class="information" />
-      <div class="chat">2</div>
+      <chat class="chat" />
     </li>
     <li class="sidebar-details">
       <router-view></router-view>
@@ -308,10 +308,12 @@ onMounted(() => {
     .information {
       position: absolute;
       top: 0;
+      z-index: 999;
     }
 
     .chat {
       margin-top: 110px;
+      width: 100%;
       height: 85%;
     }
   }
