@@ -10,27 +10,37 @@
       </ul>
     </header>
     <main class="message">
-      <el-scrollbar>
-        <div v-for="item in msg" :key="item.id">
-          <div class="msg-left" v-if="item.send">
-            <img class="headImg" src="/src/assets/头像.jpg" alt="">
-            <div class="content" v-if="item.type">
-              <p class="text">{{ item.message }}</p>
+      <el-scrollbar ref="scrollbarRef">
+        <div class="msg">
+          <div v-for="item in msg" :key="item.id">
+            <div class="msg-left" v-if="item.send" ref="messageRef">
+              <img class="headImg" src="/src/assets/头像.jpg" alt="">
+              <div class="content" v-if="item.type">
+                <p class="text">{{ item.message }}</p>
+              </div>
+              <div class="content" v-else>
+                <img class="img" src="/src/assets/头像.jpg" alt="">
+              </div>
             </div>
-            <div class="content" v-else>
-              <img class="img" src="/src/assets/头像.jpg" alt="">
+            <div class="msg-rigth" v-else ref="messageRef">
+              <div class="content" v-if="item.type">
+                <span class="name">外包客服</span>
+                <div class="text-box">
+                  <span class="status" v-if="item.status">已读</span>
+                  <span class="status" v-else>未读</span>
+                  <p class="text">{{ item.message }}</p>
+                </div>
+              </div>
+              <div class="content" v-else>
+                <span class="name">外包客服</span>
+                <div class="text-box">
+                  <span class="status" v-if="item.status">已读</span>
+                  <span class="status" v-else>未读</span>
+                  <img class="img" src="/src/assets/头像.jpg" alt="">
+                </div>
+              </div>
+              <img class="headImg" src="/src/assets/头像.jpg" alt="">
             </div>
-          </div>
-          <div class="msg-rigth" v-else>
-            <div class="content" v-if="item.type">
-              <span class="name">外包客服</span>
-              <p class="text">{{ item.message }}</p>
-            </div>
-            <div class="content" v-else>
-              <span class="name">外包客服</span>
-              <img class="img" src="/src/assets/头像.jpg" alt="">
-            </div>
-            <img class="headImg" src="/src/assets/头像.jpg" alt="">
           </div>
         </div>
       </el-scrollbar>
@@ -39,7 +49,11 @@
       <div class="input-box">
         <div class="icons">
           <ul class="icons-left">
-            <li><i class="iconfont biaoqing"></i></li>
+            <li>
+              <V3Emoji :recent="true" :options-name="optionsName" @click-emoji="appendText" size="mid" class="emoji">
+                <i class="iconfont biaoqing"></i>
+              </V3Emoji>
+            </li>
             <li><i class="iconfont tupian"></i></li>
             <li><i class="iconfont shipin"></i></li>
             <li><i class="iconfont gengduo"></i></li>
@@ -54,9 +68,12 @@
           </ul>
         </div>
         <div class="input-content">
-          <textarea class="input-text" name="" id="">
-          </textarea>
-          <el-button type="primary">发送</el-button>
+          <textarea class="input-text" v-model="sendMsg" name="input" maxlength="800"
+            placeholder='发送给title，使用Enter发送消息，使用Ctrl+Enter换行' @keyup="Enter"></textarea>
+          <div class="send">
+            <span class="num">{{ sendMsg.length }}/800</span>
+            <el-button type="primary" class="send-btn" @click="send">发送</el-button>
+          </div>
         </div>
       </div>
     </footer>
@@ -64,9 +81,39 @@
 </template>
 
 <script lang='ts' setup>
+import { ElScrollbar } from "element-plus"
+import { ref, reactive, watch, nextTick } from "vue"
+import V3Emoji from 'vue3-emoji'
 
-const msg: any = []
-const messageList = [
+import 'vue3-emoji/dist/style.css'
+
+const sendMsg = ref('')
+const messageRef = ref<HTMLDivElement>()
+const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
+
+const optionsName = {
+  'Smileys & Emotion': '笑脸&表情',
+  'Food & Drink': '食物&饮料',
+  'Animals & Nature': '动物&自然',
+  'Travel & Places': '旅行&地点',
+  'People & Body': '人物&身体',
+  Objects: '物品',
+  Symbols: '符号',
+  Flags: '旗帜',
+  Activities: '活动'
+};
+
+const newMsg = {
+  id: 1,//消息id
+  message: '',//消息内容
+  send: 0,//发送者
+  sendId: '',//发送者id
+  type: 1,//消息类型 
+  sendTime: new Date(),//发送时间 
+  status: false//消息状态
+}
+const msg: any = reactive([])
+const messageList = reactive([
   {
     id: 1,//消息id
     message: '在吗',//消息内容
@@ -74,7 +121,7 @@ const messageList = [
     sendId: '',//发送者id
     type: 1,//消息类型 
     sendTime: new Date(),//发送时间 
-    status: 1//消息状态
+    status: false//消息状态
   },
   {
     id: 2,//消息id
@@ -83,7 +130,7 @@ const messageList = [
     sendId: '',//发送者id
     type: 0,//消息类型 
     sendTime: new Date(),//发送时间 
-    status: 1//消息状态
+    status: true//消息状态
   },
   {
     id: 3,//消息id
@@ -92,7 +139,7 @@ const messageList = [
     sendId: '',//发送者id
     type: 1,//消息类型 
     sendTime: new Date(),//发送时间 
-    status: 1//消息状态
+    status: true//消息状态
   },
   {
     id: 4,//消息id
@@ -101,17 +148,54 @@ const messageList = [
     sendId: '',//发送者id
     type: 1,//消息类型 
     sendTime: new Date(),//发送时间 
-    status: 1//消息状态
+    status: true//消息状态
   }
-]
+])
 
 const getMsgList = (messageList: any) => {
   messageList.forEach((item: any) => {
     msg.unshift(item)
   })
-  console.log(msg);
+  // console.log(msg);
+}
+const createNewMsg = (sendMsg: any) => {
+  newMsg.message = sendMsg.value
+}
+const appendText = (e: any) => {
+  const input: any = document.querySelector('.input-text')
+  input!.value = input.value + e
+  sendMsg.value = input.value
+  console.log(input.value);
+
+}
+//发送消息  
+const send = () => {
+  if (sendMsg.value !== '') {
+    createNewMsg(sendMsg)
+    msg.push(newMsg)
+  }
+  //获取聊天窗口
+  const message = document.querySelectorAll('.msg')
+  //更新滚动条位置  
+  nextTick(() => {
+    scrollbarRef.value!.setScrollTop(message[0].scrollHeight + 64)
+  })
+  //清空输入框中的值  
+  sendMsg.value = ''
+
+}
+//回车发送消息  
+const Enter = (e: any) => {
+  // console.log(e);
+  if (e.keyCode === 13) {
+    send()
+  }
 }
 
+
+// watch(msg,(newValue)=>{
+//   getMsgList(newValue)
+// })
 getMsgList(messageList)
 </script>
 
@@ -226,9 +310,24 @@ getMsgList(messageList)
           color: #8a8886;
         }
 
-        .text {
-          background-color: #e1efff;
+        .text-box {
+          display: flex;
+          align-items: flex-end;
+          justify-content: flex-end;
+
+          width: 100%;
+
+          .status {
+            margin-right: 5px;
+            font-size: 12px;
+            color: #bcc4c6;
+          }
+
+          .text {
+            background-color: #e1efff;
+          }
         }
+
       }
 
     }
@@ -267,6 +366,12 @@ getMsgList(messageList)
           justify-content: space-between;
           width: 35%;
           height: 100%;
+
+          :deep(.emoji) {
+            .pollup {
+              left: -10px !important;
+            }
+          }
 
           .biaoqing,
           .tupian {
@@ -309,16 +414,46 @@ getMsgList(messageList)
       }
 
       .input-content {
+        position: relative;
         width: 100%;
         height: 80%;
 
         .input-text {
+          padding: 10px;
           width: 100%;
           height: 100%;
           border: none;
           outline: none; //边线不显示
           resize: none; //禁止拉伸
+          font-size: 16px;
+          // background-color: #ccc;
+
+          &::placeholder {
+            // padding: 10px;
+            font-size: 16px;
+            color: #bcc4c6;
+          }
         }
+
+        .send {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          align-items: center;
+
+          .num {
+            margin-right: 5px;
+            height: 100%;
+            font-size: 12px;
+            color: #bcc4c6;
+          }
+
+          .send-btn {
+            width: 70px;
+          }
+        }
+
       }
     }
   }
