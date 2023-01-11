@@ -12,7 +12,7 @@
     <main class="message">
       <el-scrollbar ref="scrollbarRef">
         <div class="msg">
-          <div v-for="item in msg" :key="item.id">
+          <div v-for="item in msg" :key="item.chitchatid">
             <div class="msg-left" v-if="item.send" ref="messageRef">
               <img class="headImg" src="/src/assets/头像.jpg" alt="">
               <div class="content" v-if="item.type">
@@ -81,8 +81,9 @@
 </template>
 
 <script lang='ts' setup>
+import { useChitchatStore } from "@/store/chitchat"
 import { ElScrollbar } from "element-plus"
-import { ref, reactive, watch, nextTick } from "vue"
+import { ref, reactive, watch, nextTick, onMounted } from "vue"
 import V3Emoji from 'vue3-emoji'
 
 import 'vue3-emoji/dist/style.css'
@@ -90,6 +91,7 @@ import 'vue3-emoji/dist/style.css'
 const sendMsg = ref('')
 const messageRef = ref<HTMLDivElement>()
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
+const chitchatStore = useChitchatStore()
 
 const optionsName = {
   'Smileys & Emotion': '笑脸&表情',
@@ -113,47 +115,20 @@ const newMsg = {
   status: false//消息状态
 }
 const msg: any = reactive([])
-const messageList = reactive([
-  {
-    id: 1,//消息id
-    message: '在吗',//消息内容
-    send: 0,//发送者
-    sendId: '',//发送者id
-    type: 1,//消息类型 
-    sendTime: new Date(),//发送时间 
-    status: false//消息状态
-  },
-  {
-    id: 2,//消息id
-    message: '在吗1',//消息内容
-    send: 1,//发送者
-    sendId: '',//发送者id
-    type: 0,//消息类型 
-    sendTime: new Date(),//发送时间 
-    status: true//消息状态
-  },
-  {
-    id: 3,//消息id
-    message: '在吗2',//消息内容
-    send: 0,//发送者
-    sendId: '',//发送者id
-    type: 1,//消息类型 
-    sendTime: new Date(),//发送时间 
-    status: true//消息状态
-  },
-  {
-    id: 4,//消息id
-    message: '在3',//消息内容
-    send: 1,//发送者
-    sendId: '',//发送者id
-    type: 1,//消息类型 
-    sendTime: new Date(),//发送时间 
-    status: true//消息状态
-  }
-])
+let messageList = reactive([])
+const getMessageList = () => {
+  messageList = chitchatStore.chitchat
+  console.log(messageList);
 
+}
 const getMsgList = (messageList: any) => {
   messageList.forEach((item: any) => {
+    if (item.sendId === 'ce3835ec-626d-48ef-90c6-2b8771c4878d') {
+      item.type = 1
+      item.send = 1
+    }
+    console.log(messageList);
+
     msg.unshift(item)
   })
   // console.log(msg);
@@ -192,11 +167,17 @@ const Enter = (e: any) => {
   }
 }
 
+onMounted(() => {
+  getMessageList()
 
+
+})
 // watch(msg,(newValue)=>{
 //   getMsgList(newValue)
 // })
-getMsgList(messageList)
+nextTick(() => {
+  getMsgList(messageList)
+})
 </script>
 
 <style lang='less' scoped>

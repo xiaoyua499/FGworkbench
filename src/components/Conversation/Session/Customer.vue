@@ -1,5 +1,5 @@
 <template>
-  <div class="customer-box" v-for="item in customers" :key="item.id">
+  <div class="customer-box" v-for="item in customers" :key="item.userId" @click="getChitchatInfo(item.customerId)">
     <!-- 头像 -->
     <img class="headImg" :src="item.headImg" alt="">
     <div class="center">
@@ -13,7 +13,7 @@
       <span class="recentTime">{{ item.updateTime }}</span>
       <!-- 星星 -->
       <el-popover placement="top" v-if="item.isStar" width="175px" trigger="hover" ref="popover">
-        <div style="
+        <div style=" 
         display: flex;
         flex-flow: column;
         align-items: center;
@@ -66,10 +66,13 @@ import { reactive, ref } from 'vue'
 import { Customer } from "@/plugin/types"
 import { useCustomerStore } from '@/store/customer'
 import { updataCustomer } from '@/server/api/customer'
+import { useChitchatStore } from '@/store/chitchat';
+import { useUserStore } from '@/store/user';
 
 //获取顾客仓库
 const customerStore = useCustomerStore()
-
+const chitchatStore = useChitchatStore()
+const userStore = useUserStore()
 //获取顾客数据
 const customerProps = defineProps({
   customers: {
@@ -91,6 +94,13 @@ const setColor = (item: any, color: string) => {
   item.starColor = color
   customerStore.updataColor(item.customerId, color)
 }
+
+const getChitchatInfo = (customerId: string) => {
+  const userId:string = userStore.userInfo.id
+  chitchatStore.getChitchat(userId,customerId)
+  // console.log(sendId);
+}
+
 </script>
 
 <style lang='less' scoped>
