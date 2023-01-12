@@ -25,7 +25,6 @@ declare module '@vue/runtime-core' {
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElMenu: typeof import('element-plus/es')['ElMenu']
@@ -38,7 +37,6 @@ declare module '@vue/runtime-core' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
-    HomeMenu: typeof import('./src/components/HomeMenu.vue')['default']
     Information: typeof import('./src/components/Conversation/ChatBox/Information.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     Menu: typeof import('./src/components/Menu.vue')['default']
@@ -47,7 +45,5 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./src/components/Search.vue')['default']
-    Session: typeof import('./src/components/Session.vue')['default']
-    Tabs: typeof import('./src/components/Tabs.vue')['default']
   }
 }
