@@ -1,7 +1,8 @@
 <template>
   <div class="chat-box">
+    <!-- 头部功能栏 -->
     <header class="header">
-      <h1 class="nikename">title</h1>
+      <h1 class="nikename">{{ chustomreStoer.currentCustomer.customerNickName }}</h1>
       <ul class="function">
         <li><i class="iconfont xingxing"></i></li>
         <li><i class="iconfont tanhao2tanhao"></i></li>
@@ -9,19 +10,25 @@
         <li><i class="iconfont kaiguan"></i></li>
       </ul>
     </header>
+    <!-- 会话列表 -->
     <main class="message">
-      <el-scrollbar ref="scrollbarRef">
+      <el-scrollbar ref="scrollbarRef" class="msgScroll">
         <div class="msg">
-          <div v-for="item in msg" :key="item.chitchatid">
+          <div v-for="item in chitchat" :key="item.chitchatid">
+            <!-- 顾客会话列表 -->
             <div class="msg-left" v-if="item.send" ref="messageRef">
+              <!-- 头像 -->
               <img class="headImg" src="/src/assets/头像.jpg" alt="">
+              <!-- 会话内容为文字 -->
               <div class="content" v-if="item.type">
                 <p class="text">{{ item.message }}</p>
               </div>
+              <!-- 会话内容为图片 -->
               <div class="content" v-else>
                 <img class="img" src="/src/assets/头像.jpg" alt="">
               </div>
             </div>
+            <!-- 用户会话列表 -->
             <div class="msg-rigth" v-else ref="messageRef">
               <div class="content" v-if="item.type">
                 <span class="name">外包客服</span>
@@ -45,11 +52,14 @@
         </div>
       </el-scrollbar>
     </main>
+    <!-- 输入框 -->
     <footer class="input">
       <div class="input-box">
+        <!-- 输入框功能列表 -->
         <div class="icons">
           <ul class="icons-left">
             <li>
+              <!-- emoji表情组件 -->
               <V3Emoji :recent="true" :options-name="optionsName" @click-emoji="appendText" size="mid" class="emoji">
                 <i class="iconfont biaoqing"></i>
               </V3Emoji>
@@ -72,6 +82,7 @@
             placeholder='发送给title，使用Enter发送消息，使用Ctrl+Enter换行' @keyup="Enter"></textarea>
           <div class="send">
             <span class="num">{{ sendMsg.length }}/800</span>
+            <!-- 发送按钮 -->
             <el-button type="primary" class="send-btn" @click="send">发送</el-button>
           </div>
         </div>
@@ -81,18 +92,28 @@
 </template>
 
 <script lang='ts' setup>
+import { sendChitchat } from "@/server/api/chitchat"
 import { useChitchatStore } from "@/store/chitchat"
+import { useCustomerStore } from "@/store/customer"
+import { useUserStore } from "@/store/user"
 import { ElScrollbar } from "element-plus"
-import { ref, reactive, watch, nextTick, onMounted } from "vue"
+import { storeToRefs } from "pinia"
+import { ref, reactive, watch, nextTick, onMounted, onBeforeUpdate, onUpdated } from "vue"
 import V3Emoji from 'vue3-emoji'
-
 import 'vue3-emoji/dist/style.css'
 
-const sendMsg = ref('')
-const messageRef = ref<HTMLDivElement>()
-const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
-const chitchatStore = useChitchatStore()
 
+const sendMsg = ref('') //发送消息
+const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
+//仓库
+const chitchatStore = useChitchatStore()
+const chustomreStoer = useCustomerStore()
+const userStore = useUserStore()
+//仓库数据
+const { userInfo } = storeToRefs(userStore)
+const { chitchat } = storeToRefs(chitchatStore)
+const { currentCustomer } = storeToRefs(chustomreStoer)
+//配置emoji表情分类名称
 const optionsName = {
   'Smileys & Emotion': '笑脸&表情',
   'Food & Drink': '食物&饮料',
@@ -105,79 +126,66 @@ const optionsName = {
   Activities: '活动'
 };
 
+//新消息
 const newMsg = {
-  id: 1,//消息id
-  message: '',//消息内容
-  send: 0,//发送者
-  sendId: '',//发送者id
-  type: 1,//消息类型 
-  sendTime: new Date(),//发送时间 
-  status: false//消息状态
+  acceptId: "",
+  sendId: "",
+  customerId: "",
+  userId: "",
+  message: "",
+  contentAttribute: 0,
+  MessageStatus: false
 }
-const msg: any = reactive([])
-let messageList = reactive([])
-const getMessageList = () => {
-  messageList = chitchatStore.chitchat
-  console.log(messageList);
 
-}
-const getMsgList = (messageList: any) => {
-  messageList.forEach((item: any) => {
-    if (item.sendId === 'ce3835ec-626d-48ef-90c6-2b8771c4878d') {
-      item.type = 1
-      item.send = 1
-    }
-    console.log(messageList);
-
-    msg.unshift(item)
-  })
-  // console.log(msg);
-}
-const createNewMsg = (sendMsg: any) => {
+//创建新消息
+const createNewMsg = async (sendMsg: any) => {
   newMsg.message = sendMsg.value
+  newMsg.acceptId = currentCustomer.value.customerId
+  newMsg.sendId = userInfo.value.id
+  newMsg.customerId = currentCustomer.value.customerId
+  newMsg.userId = userInfo.value.id
+  newMsg.contentAttribute = 0
+  newMsg.MessageStatus = false
+  //将新消息发送到服务器
+  await sendChitchat(newMsg)
+  //获取信息列表
+  chitchatStore.getChitchat(currentCustomer.value.customerId, userInfo.value.id)
+  //刷新滚动条的位置
+  nextTick(() => {
+    setTimeout(() => {
+      // 获取聊天窗口
+      const message = document.querySelectorAll('.msg')
+      //滚动条滚动到当前位置  
+      scrollbarRef.value!.setScrollTop(message[0].scrollHeight + 64)
+    }, 100)
+  })
+
 }
+//将emoji表情添加到输入框
 const appendText = (e: any) => {
   const input: any = document.querySelector('.input-text')
   input!.value = input.value + e
   sendMsg.value = input.value
   console.log(input.value);
-
 }
 //发送消息  
 const send = () => {
+  //判断输入框的值是否为空
   if (sendMsg.value !== '') {
     createNewMsg(sendMsg)
-    msg.push(newMsg)
   }
-  //获取聊天窗口
-  const message = document.querySelectorAll('.msg')
-  //更新滚动条位置  
-  nextTick(() => {
-    scrollbarRef.value!.setScrollTop(message[0].scrollHeight + 64)
-  })
-  //清空输入框中的值  
+  //清空输入框中的值
   sendMsg.value = ''
-
 }
 //回车发送消息  
 const Enter = (e: any) => {
   // console.log(e);
+  // 判断用户是否按下回车
   if (e.keyCode === 13) {
     send()
   }
 }
 
-onMounted(() => {
-  getMessageList()
-
-
-})
-// watch(msg,(newValue)=>{
-//   getMsgList(newValue)
-// })
-nextTick(() => {
-  getMsgList(messageList)
-})
 </script>
 
 <style lang='less' scoped>
