@@ -1,5 +1,6 @@
 <template>
-  <div class="customer-box" v-for="item in customers" :key="item.userId" @click="getChitchatInfo(item.customerId)">
+  <div class="customer-box" v-for="item in customers" :key="item.userId"
+    @click="getChitchatInfo(item.customerId, item.customerNickName)">
     <!-- 头像 -->
     <img class="headImg" :src="item.headImg" alt="">
     <div class="center">
@@ -32,7 +33,7 @@
             border-radius: 50%;
             background-color:#ff574d;" @click="setColor(item, ' #ff574d')"></div>
             <div class="round" style="
-            width: 10px;
+            width: 10px; 
             height: 10px;
             border-radius: 50%;
             background-color:#ffb340;" @click="setColor(item, ' #ffb340')"></div>
@@ -62,7 +63,7 @@
 </template>
 
 <script lang='ts' setup>
-import { reactive, ref } from 'vue'
+import { nextTick, onMounted, reactive, ref } from 'vue'
 import { Customer } from "@/plugin/types"
 import { useCustomerStore } from '@/store/customer'
 import { updataCustomer } from '@/server/api/customer'
@@ -95,10 +96,17 @@ const setColor = (item: any, color: string) => {
   customerStore.updataColor(item.customerId, color)
 }
 
-const getChitchatInfo = (customerId: string) => {
-  const userId:string = userStore.userInfo.id
-  chitchatStore.getChitchat(userId,customerId)
+//获取聊天信息  
+const getChitchatInfo = (customerId: string, customerNickName: string) => {
+  const userId: string = userStore.userInfo.id
+  chitchatStore.getChitchat(customerId, userId)
   // console.log(sendId);
+  //创建当前顾客  
+  const currentCustomer = {
+    customerNickName: customerNickName,
+    customerId: customerId
+  }
+  customerStore.getCurrentCustomer(currentCustomer)
 }
 
 </script>

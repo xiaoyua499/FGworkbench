@@ -11,6 +11,11 @@ export const useCustomerStore = defineStore(Names.Customer, {
       payCustomer: [] as Customer[], //未付款用户
       recentlyCustomer: [] as Customer[], //最近用户
       inServiceCustomer: [] as Customer[], //服务中用户
+      //当前顾客
+      currentCustomer: {
+        customerId:'',
+        customerNickName:''
+      }
     }
   },
   getters: {
@@ -48,7 +53,7 @@ export const useCustomerStore = defineStore(Names.Customer, {
     },
 
     //更新星星颜色
-    async updataColor(customerId: any, color: any) {
+    async updataColor(customerId: string, color: string) {
       this.customerData.forEach(async item => {
         if (item.customerId === customerId) {
           item.starColor = color
@@ -85,6 +90,11 @@ export const useCustomerStore = defineStore(Names.Customer, {
       await updataCustomer(params).then(res => {
         // console.log(res);
       })
+    },
+    //获取当前顾客的信息  
+    getCurrentCustomer(currentCustomer:any) {
+      this.currentCustomer = currentCustomer
+      console.log(this.currentCustomer);
     }
   }
 })
