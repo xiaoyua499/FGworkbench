@@ -35,6 +35,7 @@ interface Customer {
   isEnd: boolean,//是否结束会话
   isRecently: boolean,//是否为最近会话
   starColor: string//星星颜色
+  updateTime:string//更新时间
 }
 
 export {

@@ -3,21 +3,21 @@
     <el-collapse-item name="星标用户" class="list">
       <template #title>
         星标用户
-        <span >({{ starCustomer.length }}/200)</span>
+        <span>({{ starCustomer?.length }}/200)</span>
       </template>
       <Customer :customers="starCustomer" />
     </el-collapse-item>
     <el-collapse-item name="今日咨询未下单" class="list">
       <template #title>
         今日咨询未下单
-        <span >({{ shoppingCustomer.length }})</span>
+        <span>({{ shoppingCustomer?.length }})</span>
       </template>
       <Customer :customers="shoppingCustomer" />
     </el-collapse-item>
     <el-collapse-item name="今日下单未付款" class="list">
       <template #title>
         今日下单未付款
-        <span >({{ payCustomer.length }})</span>
+        <span>({{ payCustomer?.length }})</span>
       </template>
       <Customer :customers="payCustomer" />
     </el-collapse-item>
@@ -44,7 +44,7 @@ const handleChange = (val: string[]) => {
 //顾客信息
 const customerStore = useCustomerStore()
 
-const { starCustomer, shoppingCustomer, payCustomer, recentlyCustomer }=storeToRefs(customerStore)
+const { starCustomer, shoppingCustomer, payCustomer, recentlyCustomer } = storeToRefs(customerStore)
 
 </script>
 

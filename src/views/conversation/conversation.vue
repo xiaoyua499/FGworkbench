@@ -83,8 +83,9 @@
 <script lang='ts' setup>
 import { useUserStore } from '@/store/user';
 import { useCustomerStore } from "@/store/customer";
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { getCustomerInfo } from '@/server/api/customer'
+import { Customer } from '@/plugin/types';
 //获取用户仓库
 const userStore = useUserStore()
 
@@ -174,11 +175,13 @@ const getUserCondition = (value: number) => {
   // console.log(dropdownLink);
 }
 
+let customers: Customer[] = reactive([])
+
 //获取顾客信息
 const getCustomersInfos = async () => {
-  const customer = await getCustomerInfo().then(res => {
-    const data: any[] = res.data.data
-    data.forEach(item => {
+  const customer = await getCustomerInfo(userStore.userInfo.id).then(res => {
+    const data:any[] = res.data.data
+    data?.forEach(item => {
       //截取最近聊天时间
       item.updateTime = Number(item.updateTime.slice(11, 13)) + 8 + item.updateTime.slice(13, 16)
       // console.log(item);
