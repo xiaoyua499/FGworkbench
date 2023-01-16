@@ -1,63 +1,21 @@
 <template>
-  <div class="customer-box" v-for="item in customers" :key="item.userId"
-    @click="getChitchatInfo(item.customerId, item.customerNickName)">
-    <!-- 头像 -->
-    <img class="headImg" :src="item.headImg" alt="">
-    <div class="center">
-      <!-- 昵称 -->
-      <span class="nikename">{{ item.customerNickName }}</span>
-      <!-- 最近会话内容 -->
-      <span class="recentNews">{{ item.RecentNews }}</span>
+  <div class="customer-box" v-for="item in customers" :key="item.userId">
+    <div @click="getChitchatInfo(item)" class="left">
+      <!-- 头像 -->
+      <img class="headImg" :src="item.headImg" alt="">
+      <div class="center">
+        <!-- 昵称 -->
+        <span class="nikename">{{ item.customerNickName }}</span>
+        <!-- 最近会话内容 -->
+        <span class="recentNews">{{ item.RecentNews }}</span>
+      </div>
     </div>
+
     <div class="right">
       <!-- 最近会话时间 -->
       <span class="recentTime">{{ item.updateTime }}</span>
       <!-- 星星 -->
-      <el-popover placement="top" v-if="item.isStar" width="175px" trigger="hover" ref="popover">
-        <div style=" 
-        display: flex;
-        flex-flow: column;
-        align-items: center;
-        justify-content: space-between;">
-          <p style="font-size">快捷标星(Ctrl+Shift+Y)</p>
-          <div style="
-          margin-top: 5px;
-          display: flex;
-          align-items: center;
-          justify-content: space-around;
-          width: 100%;">
-            <div class="round" style="
-            margin: 0; 
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color:#ff574d;" @click="setColor(item, ' #ff574d')"></div>
-            <div class="round" style="
-            width: 10px; 
-            height: 10px;
-            border-radius: 50%;
-            background-color:#ffb340;" @click="setColor(item, ' #ffb340')"></div>
-            <div class="round" style="
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color:#669eff;" @click="setColor(item, ' #669eff')"></div>
-            <div class="round" style="
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color:#6ccc3d;" @click="setColor(item, ' #6ccc3d')"></div>
-            <div class="round" style="
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color:#ccc;" @click="setColor(item, ' #ccc')"></div>
-          </div>
-        </div>
-        <template #reference>
-          <i class="iconfont shoucang star" :style="getStyle(item.starColor)" @click="item.isPopover = true"></i>
-        </template>
-      </el-popover>
+      <star :item="item" :starIcon="starIcon" />
     </div>
   </div>
 </template>
@@ -82,31 +40,14 @@ const customerProps = defineProps({
   }
 })
 
-//动态设置星星颜色
-const getStyle = (starColor: string) => {
-  return {
-    color: starColor
-  }
-}
-
-//动态设置星星颜色
-const setColor = (item: any, color: string) => {
-  item.isPopover = false
-  item.starColor = color
-  customerStore.updataColor(item.customerId, color)
-}
+//标星icon样式  
+const starIcon = 'star'
 
 //获取聊天信息  
-const getChitchatInfo = (customerId: string, customerNickName: string) => {
+const getChitchatInfo = (customer: any) => {
   const userId: string = userStore.userInfo.id
-  chitchatStore.getChitchat(customerId, userId)
-  // console.log(sendId);
-  //创建当前顾客  
-  const currentCustomer = {
-    customerNickName: customerNickName,
-    customerId: customerId
-  }
-  customerStore.getCurrentCustomer(currentCustomer)
+  chitchatStore.getChitchat(customer.customerId, userId)
+  customerStore.getCurrentCustomer(customer)
 }
 
 </script>
@@ -115,7 +56,7 @@ const getChitchatInfo = (customerId: string, customerNickName: string) => {
 .customer-box {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
   height: 75px;
 
@@ -154,11 +95,20 @@ const getChitchatInfo = (customerId: string, customerNickName: string) => {
     }
   }
 
+  .left {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding-left: 10px;
+    width: 75%;
+  }
+
   :deep(.right) {
     display: flex;
     flex-flow: column;
     align-items: center;
     justify-content: center;
+    padding-right: 10px;
 
     .round {
       width: 10px;
