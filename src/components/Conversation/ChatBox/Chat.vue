@@ -4,7 +4,8 @@
     <header class="header">
       <h1 class="nikename">{{ chustomreStoer.currentCustomer.customerNickName }}</h1>
       <ul class="function">
-        <li><i class="iconfont xingxing"></i></li>
+        <!-- <li><i class="iconfont xingxing"></i></li> -->
+        <li><Star :item="currentCustomer" :isStarStyle="isStarStyle"/></li>
         <li><i class="iconfont tanhao2tanhao"></i></li>
         <li><i class="iconfont qiehuanyonghu"></i></li>
         <li><i class="iconfont kaiguan"></i></li>
@@ -102,8 +103,10 @@ import { ref, reactive, watch, nextTick, onMounted, onBeforeUpdate, onUpdated } 
 import V3Emoji from 'vue3-emoji'
 import 'vue3-emoji/dist/style.css'
 
+//标星icon样式  
+const isStarStyle =false
 
-const sendMsg = ref('') //发送消息
+const sendMsg = ref<string>('') //发送消息
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
 //仓库
 const chitchatStore = useChitchatStore()
@@ -137,8 +140,12 @@ const newMsg = {
   MessageStatus: false
 }
 
-//创建新消息
-const createNewMsg = async (sendMsg: any) => {
+
+/**
+ * 创建新消息
+ * @param sendMsg 输入框中的内容
+ */
+const createNewMsg = async (sendMsg:any) => {
   newMsg.message = sendMsg.value
   newMsg.acceptId = currentCustomer.value.customerId
   newMsg.sendId = userInfo.value.id
@@ -168,7 +175,7 @@ const appendText = (e: any) => {
   sendMsg.value = input.value
   console.log(input.value);
 }
-//发送消息  
+//发送消息 
 const send = () => {
   //判断输入框的值是否为空
   if (sendMsg.value !== '') {

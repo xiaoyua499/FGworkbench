@@ -36,7 +36,6 @@ export const useChitchatStore = defineStore(Names.Chitchat, {
         })
       }).catch(res=>{
         console.log(res);
-        
       })
       
     }

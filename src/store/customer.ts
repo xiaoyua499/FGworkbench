@@ -13,8 +13,8 @@ export const useCustomerStore = defineStore(Names.Customer, {
       inServiceCustomer: [] as Customer[], //服务中用户
       //当前顾客
       currentCustomer: {
-        customerId:'',
-        customerNickName:''
+        customerId: '',
+        customerNickName: ''
       }
     }
   },
@@ -53,10 +53,11 @@ export const useCustomerStore = defineStore(Names.Customer, {
     },
 
     //更新星星颜色
-    async updataColor(customerId: string, color: string) {
+    async updataColor(customerId: string, color: string, isStar: boolean = true) {
       this.customerData.forEach(async item => {
         if (item.customerId === customerId) {
           item.starColor = color
+          item.isStar = isStar
           // console.log(item);
           //与数据库同步星星颜色
           this.updataCustomers(item)
@@ -86,13 +87,21 @@ export const useCustomerStore = defineStore(Names.Customer, {
       params.RecentNews = item.RecentNews
       params.isRecently = item.isRecently
       // console.log(params);
-
       await updataCustomer(params).then(res => {
-        // console.log(res);
+        // this.getCustomer([res.data.data])
+        const value = res.data.data
+        const customer = this.customerData
+        for (let index = 0; index < customer.length; index++) {
+          if (customer[index].customerId == value.customerId) {
+            console.log(111, customer[index]);
+            this.currentCustomer = value
+          }
+        }
       })
     },
     //获取当前顾客的信息  
-    getCurrentCustomer(currentCustomer:any) {
+    getCurrentCustomer(currentCustomer: any) {
+      currentCustomer.isStar = true
       this.currentCustomer = currentCustomer
       console.log(this.currentCustomer);
     }
