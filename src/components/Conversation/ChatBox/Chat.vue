@@ -4,7 +4,6 @@
     <header class="header">
       <h1 class="nikename">{{ chustomreStoer.currentCustomer.customerNickName }}</h1>
       <ul class="function">
-        <!-- <li><i class="iconfont xingxing"></i></li> -->
         <li><Star :item="currentCustomer" :isStarStyle="isStarStyle"/></li>
         <li><i class="iconfont tanhao2tanhao"></i></li>
         <li><i class="iconfont qiehuanyonghu"></i></li>

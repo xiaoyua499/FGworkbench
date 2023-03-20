@@ -103,7 +103,7 @@ export const useCustomerStore = defineStore(Names.Customer, {
     getCurrentCustomer(currentCustomer: any) {
       currentCustomer.isStar = true
       this.currentCustomer = currentCustomer
-      console.log(this.currentCustomer);
+      // console.log(this.currentCustomer);
     }
   }
 })
