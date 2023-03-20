@@ -224,7 +224,6 @@ onMounted(() => {
       height: 15%;
       border-bottom: 2px solid #f7f7f7;
 
-
       .info-left {
         position: relative;
         display: flex;
@@ -237,7 +236,6 @@ onMounted(() => {
           width: 40px;
           height: 40px;
           border-radius: 5px;
-
         }
 
         .state {
@@ -296,7 +294,6 @@ onMounted(() => {
       width: 100%;
       height: 85%;
       // overflow: scroll;
-
       .search {
         margin-bottom: 10px;
       }

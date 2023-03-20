@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "23626704",
+      "name": "分割线",
+      "font_class": "fengexian",
+      "unicode": "e64b",
+      "unicode_decimal": 58955
+    },
+    {
+      "icon_id": "7854244",
+      "name": "编辑",
+      "font_class": "bianji",
+      "unicode": "e763",
+      "unicode_decimal": 59235
+    },
+    {
       "icon_id": "1092132",
       "name": "发票",
       "font_class": "fapiao",

@@ -24,7 +24,7 @@ export const useChitchatStore = defineStore(Names.Chitchat, {
     async getChitchat(customerId: string,userId:string) {
       await getChitchat(customerId,userId).then((res: any) => {
         this.chitchat = res.data.data
-        console.log(res.data.data);
+        // console.log(res.data.data);
         this.chitchat.forEach((item: any) => {
           if (item.sendId === chustomreStoer.currentCustomer.customerId) {
             item.type = 1
@@ -35,7 +35,7 @@ export const useChitchatStore = defineStore(Names.Chitchat, {
           }
         })
       }).catch(res=>{
-        console.log(res);
+        // console.log(res);
       })
       
     }
