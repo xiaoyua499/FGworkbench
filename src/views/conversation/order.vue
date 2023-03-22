@@ -1,7 +1,7 @@
 <template>
-  <main class="order">
+  <main class="order" ref="order">
     <!-- 买家信息 -->
-    <header class="buyer-description">
+    <header class="buyer-description" ref="orderTop">
       <div class="buyer-top">
         <div class="left">
           <!-- 头像 -->
@@ -54,7 +54,7 @@
       </ul>
     </header>
     <footer class="order-details">
-      <OrderDetails />
+      <OrderDetails  />
     </footer>
   </main>
 </template>
@@ -62,9 +62,13 @@
 <script lang='ts' setup>
 import { useCustomerStore } from "@/store/customer"
 import { storeToRefs } from "pinia"
+import { onMounted, ref } from "vue"
+
+
 
 const chustomreStoer = useCustomerStore()
 const { currentCustomer } = storeToRefs(chustomreStoer)
+
 
 </script>
 
@@ -165,7 +169,6 @@ const { currentCustomer } = storeToRefs(chustomreStoer)
   .order-details {
     width: 100%;
     height: 65%;
-    background-color: #fff;
   }
 }
 </style>
